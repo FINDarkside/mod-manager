@@ -1,0 +1,51 @@
+@import url("~@/assets/MaterialIcons/MaterialIcons.css");
+/* FONTS */
+
+@font-face {
+    font-family: "Roboto";
+    src: url("~@/assets/Roboto/Roboto-Regular.woff2");
+}
+
+@font-face {
+    font-family: "Roboto";
+    font-weight: bold;
+    src: url("~@/assets/Roboto/Roboto-Bold.woff2");
+}
+
+html {
+    overflow: hidden;
+}
+
+.hide {
+    display: none;
+}
+
+.theme--light.background {
+    background-color: #fafafa;
+}
+
+.bg {
+    background-color: #fafafa;
+}
+
+.theme--dark .bg {
+    background-color: #303030;
+}
+
+/* UTIL */
+
+.flexbox {
+    display: flex;
+}
+
+.flexbox.vertical-align{
+    align-items: center;
+}
+
+.inline{
+    display: inline;
+}
+
+.va--super {
+    vertical-align: super;
+  }
