@@ -1,10 +1,16 @@
 <template>
   <div id='sidebar'>
-    <div class='userContainer' >
+    <div class='userContainer' v-if="!!$store.state.user.loggedUser">
       <a v-on:click="$store.dispatch('showLoginPage');" class='userImage-link'>
         <img class='userImage' src='~@/assets/icon.png'>
       </a>
       <span class='currentUserName'>FINDarkside</span>
+    </div>
+    <div class='userContainer' v-else>
+      <a v-on:click="$store.dispatch('showLoginPage');" class='userImage-link'>
+        <v-icon left class="userImage">person</v-icon>
+      </a>
+      <span class='currentUserName'>Guest</span>
     </div>
     <template v-for='route in routes'>
       <template v-if='route.showInSidebar'>
@@ -35,16 +41,22 @@ export default {
 
 .userImage {
   width: 100%;
-  height: 100%
+  height: 100%;
 }
 
-.userImage-link{
+i.userImage{
+  font-size: 90px;
+  color: rgba(0,0,0,0.4)!important;
+}
+
+.userImage-link {
   display: block;
   margin: 0px auto;
   border-radius: 100%;
   width: 127px;
   height: 127px;
   overflow: hidden;
+  background-color: #555;
 }
 
 .userContainer {

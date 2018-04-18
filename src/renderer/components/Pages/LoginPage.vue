@@ -7,41 +7,44 @@
         <h1 v-else class="inline">Login</h1>
       </div>
       
-      <v-form ref="form" v-model="valid" lazy-validation>
-        <v-text-field label="Username" 
-          :rules="usernameRules" 
+      <v-form ref="form" v-model="valid" lazy-validation @submit="submit">
+        <v-text-field 
+          label="Username" 
+          :rules="mode==='registering'?usernameRules:requiredRule" 
           v-model="username"
           key="input-username"
+          validate-on-blur
         ></v-text-field>
         <v-text-field
           v-model="password"
-          :rules="passwordRules"
+          :rules="mode==='registering'?passwordRules:requiredRule"
           label="Password"
-          hint="At least 8 characters"
-          key="input-password"
+          :hint="mode==='registering'?'At least 8 characters':null"
+          validate-on-blur
+          type=password
         ></v-text-field>
-        <v-text-field
+        <v-text-field v-if="mode==='registering'"
           ref="input-confirmPassword"
           v-model="confirmPassword"
           :rules="confirmPasswordRules"
           label="Confirm password"
-          v-if="mode==='registering'"
+          validate-on-blur
+          type=password
         ></v-text-field>
-        <v-text-field
+        <v-text-field v-if="mode==='registering'"
           :rules="emailRules"
           label="Enter your email"
           key="input-email"
-          v-if="mode==='registering'"
         ></v-text-field>
         <div v-if="mode!=='registering'" class="flexbox vertical-align" style="height: 48px;">
           <a @click="registering=false">Forgot password?</a>
         </div>
         <div class="flexbox vertical-align">
-          <a v-if="mode==='registering'"  @click="mode='login'">Already registered?</a>
+          <a v-if="mode==='registering'" @click="mode='login'">Already registered?</a>
           <a v-else @click="mode='registering'">Not registered yet?</a>
           <v-spacer></v-spacer>
-          <v-btn v-if="mode==='registering'" :disabled="!valid" center color="primary"  @click="submit">Register</v-btn>
-          <v-btn v-else :disabled="!valid || loading" color="primary" @click="submit"
+          <v-btn v-if="mode==='registering'" center color="primary" type="submit">Register</v-btn>
+          <v-btn v-else :disabled="loading" color="primary" type="submit"
             :loading="loading"
           >Login</v-btn>
         </div>
@@ -72,11 +75,14 @@ export default {
       ],
       confirmPassword: "",
       confirmPasswordRules:
-        [v => v === this.password] || "Passwords don't match",
+        [v => v === this.password || "Passwords don't match"],
       email: "",
       emailRules: [
         v => !!v || "E-mail is required",
         v => /\S+@\S+\.\S+/.test(v) || "E-mail must be valid"
+      ],
+      requiredRule: [
+        v => !!v || "This field is required"
       ]
     };
   },
@@ -88,13 +94,15 @@ export default {
   },
   methods: {
     async submit() {
+      console.log(this.$refs["form"].validate());
       if (this.$refs["form"].validate()) {
         if (this.mode === "login") {
           this.loading = true;
           const res = await ServerUtil.login(this.username, this.password);
           this.loading = false;
           console.log(res.data.sessionID);
-          this.$store.dispatch('hideLoginPage');
+          this.$store.dispatch("signIn", { test: "asd" });
+          this.$store.dispatch("hideLoginPage");
         }
       }
     }
