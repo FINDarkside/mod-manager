@@ -17,10 +17,28 @@ import * as Util from './Util'
  * @returns {Error} Error or null
  */
 export async function login(username, password) {
-    await Util.wait(1000);
+    await Util.wait(1500);
     return {
         data: {
-            sessionID: "TEST"
+            username: username,
+            sessionID: "TEST",
+            email: "asd@asd.com"
         }
     };
+}
+
+export async function register(username, password, email) {
+    await Util.wait(2000);
+    return {
+        data: {
+            username: username,
+            sessionID: "TEST",
+            email: "asd@asd.com"
+        }
+    };
+}
+
+export async function isUsernameAvailable(username) {
+    await Util.wait(500);
+    return Math.random() < 0.5;
 }

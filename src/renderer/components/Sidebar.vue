@@ -1,10 +1,10 @@
 <template>
   <div id='sidebar'>
-    <div class='userContainer' v-if="!!$store.state.user.loggedUser">
-      <a v-on:click="$store.dispatch('showLoginPage');" class='userImage-link'>
+    <div class='userContainer' v-if="!!$store.state.user.loggedIn">
+      <a class='userImage-link'>
         <img class='userImage' src='~@/assets/icon.png'>
       </a>
-      <span class='currentUserName'>FINDarkside</span>
+      <span class='currentUserName'>{{this.$store.state.user.username}}</span>
     </div>
     <div class='userContainer' v-else>
       <a v-on:click="$store.dispatch('showLoginPage');" class='userImage-link'>

@@ -3,27 +3,30 @@
     <div class="login-page--wrapper">
       <div class="login-header-container mb-4">
         <a class="va--super pr-3" @click="$store.dispatch('hideLoginPage');"><v-icon>arrow_back</v-icon></a>
-        <h1 v-if="mode==='registering'" class="inline">Register</h1>
-        <h1 v-else class="inline">Login</h1>
+        <h1 v-if="mode==='register'" class="inline">Register</h1>
+        <h1 v-else-if="mode==='login'" class="inline">Login</h1>
+        <h1 v-else class="inline">Tough luck</h1>
       </div>
       
-      <v-form ref="form" v-model="valid" lazy-validation @submit="submit">
+      <v-form ref="form" v-model="valid" lazy-validation @submit="submit" v-if="mode!=='forgotPassword'">
         <v-text-field 
+          ref="input-username"
           label="Username" 
-          :rules="mode==='registering'?usernameRules:requiredRule" 
+          :rules="mode===''?usernameRules:requiredRule" 
           v-model="username"
-          key="input-username"
           validate-on-blur
+          :loading="usernameLoading"
         ></v-text-field>
         <v-text-field
+          ref="input-password"
           v-model="password"
-          :rules="mode==='registering'?passwordRules:requiredRule"
+          :rules="mode==='register'?passwordRules:requiredRule"
           label="Password"
-          :hint="mode==='registering'?'At least 8 characters':null"
+          :hint="mode==='register'?'At least 8 characters':null"
           validate-on-blur
           type=password
         ></v-text-field>
-        <v-text-field v-if="mode==='registering'"
+        <v-text-field v-if="mode==='register'"
           ref="input-confirmPassword"
           v-model="confirmPassword"
           :rules="confirmPasswordRules"
@@ -31,22 +34,24 @@
           validate-on-blur
           type=password
         ></v-text-field>
-        <v-text-field v-if="mode==='registering'"
+        <v-text-field v-if="mode==='register'"
+          v-model="email"
+          ref="input-email"
           :rules="emailRules"
           label="Enter your email"
-          key="input-email"
+          validate-on-blur 
         ></v-text-field>
-        <div v-if="mode!=='registering'" class="flexbox vertical-align" style="height: 48px;">
-          <a @click="registering=false">Forgot password?</a>
+        <div v-if="mode==='login'" class="flexbox vertical-align" style="height: 48px;">
+          <a @click="mode='forgotPassword'">Forgot password?</a>
         </div>
         <div class="flexbox vertical-align">
-          <a v-if="mode==='registering'" @click="mode='login'">Already registered?</a>
-          <a v-else @click="mode='registering'">Not registered yet?</a>
+          <a v-if="mode==='register'" @click="mode='login'">Already registered?</a>
+          <a v-else @click="mode='register'">Not registered yet?</a>
           <v-spacer></v-spacer>
-          <v-btn v-if="mode==='registering'" center color="primary" type="submit">Register</v-btn>
-          <v-btn v-else :disabled="loading" color="primary" type="submit"
-            :loading="loading"
-          >Login</v-btn>
+          <v-btn :disabled="loading" color="primary" type="submit" :loading="loading">
+            <span v-if="mode==='login'">Login</span>
+            <span v-else>Register</span>
+          </v-btn>
         </div>
 
       </v-form>
@@ -56,6 +61,7 @@
 
 <script>
 import * as ServerUtil from "$root/ServerUtil.js";
+import debounce from "lodash/debounce";
 
 export default {
   name: "LoginPage",
@@ -65,6 +71,7 @@ export default {
       loading: false,
       mode: "login",
       username: "",
+      usernameLoading: false,
       usernameRules: [
         v => !!v || "Username is required",
         v => (v && v.length >= 2) || "Username must at least 2 characters"
@@ -74,37 +81,83 @@ export default {
         v => (v && v.length > 8) || "Password must be more than 8 characters" // TODO use zxcvbn
       ],
       confirmPassword: "",
-      confirmPasswordRules:
-        [v => v === this.password || "Passwords don't match"],
+      confirmPasswordRules: [
+        v => v === this.password || "Passwords don't match"
+      ],
       email: "",
       emailRules: [
         v => !!v || "E-mail is required",
         v => /\S+@\S+\.\S+/.test(v) || "E-mail must be valid"
       ],
-      requiredRule: [
-        v => !!v || "This field is required"
-      ]
+      requiredRule: [v => !!v || "This field is required"]
     };
   },
   watch: {
-    password: function(v) {
-      if (this.mode === "registering")
+    username(v) {
+      this.$refs["input-username"].valid = true;
+      let userNameInput = this.$refs["input-username"];
+      // .length=0 not reactive
+      userNameInput.errorMessages.splice(0, userNameInput.errorMessages.length);
+      this.$refs["input-username"].validate();
+      if (this.mode === "register" && !!this.username) {
+        this.checkUsernameAvailableDebounced();
+      }
+    },
+    password(v) {
+      this.$refs["input-password"].validate();
+      if (this.mode === "register")
         this.$refs["input-confirmPassword"].validate();
+    },
+    confirmPassword(v) {
+      this.$refs["input-confirmPassword"].validate();
+    },
+    confirmPassword(v) {
+      this.$refs["input-confirmPassword"].validate();
+    },
+    email(v) {
+      this.$refs["input-email"].validate();
+    },
+    mode(v) {
+      //this.$refs.form.reset();
+      this.usernameLoading = false;
+      this.checkUsernameAvailableDebounced.cancel();
     }
   },
   methods: {
     async submit() {
-      console.log(this.$refs["form"].validate());
       if (this.$refs["form"].validate()) {
         if (this.mode === "login") {
           this.loading = true;
           const res = await ServerUtil.login(this.username, this.password);
-          this.loading = false;
-          console.log(res.data.sessionID);
-          this.$store.dispatch("signIn", { test: "asd" });
+          this.$store.dispatch("signIn", res.data);
+          this.$store.dispatch("hideLoginPage");
+        } else if (this.mode === "register") {
+          this.loading = true;
+          const res = await ServerUtil.register(
+            this.username,
+            this.password,
+            this.email
+          );
+          this.$store.dispatch("signIn", res.data);
           this.$store.dispatch("hideLoginPage");
         }
       }
+    },
+    async checkUsernameAvailable() {
+      if (!this.username) return;
+      this.usernameLoading = true;
+      const b = await ServerUtil.isUsernameAvailable(this.username);
+      if (!b) {
+        this.$refs["input-username"].errorMessages.push(
+          "This username is already in use"
+        );
+      }
+      this.usernameLoading = false;
+    }
+  },
+  computed: {
+    checkUsernameAvailableDebounced() {
+      return debounce(this.checkUsernameAvailable, 500);
     }
   }
 };

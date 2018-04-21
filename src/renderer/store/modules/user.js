@@ -5,14 +5,16 @@ const state = {
             AvatarUrl: String
         }
     */
-    loggedUser: null
+    username: null,
+    loggedIn: false
 }
 
 const mutations = {
     LOGGED_USER_SET(state, user) {
         console.log("LOGGED_USER_SET");
-        console.log(user);
-        state.loggedUser = user;
+        console.log(JSON.stringify(user));
+        state.username = user.username;
+        state.loggedIn = true;
     }
 }
 
@@ -20,8 +22,8 @@ const actions = {
     logout() {
         this.commit('LOGGED_USER_SET', null);
     },
-    signIn() {
-        this.commit('LOGGED_USER_SET', {});
+    signIn(state, userData) {
+        this.commit('LOGGED_USER_SET', userData);
     }
 }
 
