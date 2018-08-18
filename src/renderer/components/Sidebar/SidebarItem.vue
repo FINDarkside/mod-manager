@@ -29,10 +29,10 @@ export default {
 }
 
 .sidebar-item:hover {
-  background-color: $sidebarBackgroundSelected;
+  background-color: var(--sidebar-background-selected);
 }
 
 .sidebar-item.active {
-  background-color: $sidebarBackgroundSelected;
+  background-color: var(--sidebar-background-selected);
 }
 </style>

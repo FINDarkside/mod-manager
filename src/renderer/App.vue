@@ -30,6 +30,8 @@ export default {
 <style >
 @import url("~@/assets/MaterialIcons/MaterialIcons.css");
 @import url("main_theme.scss");
+@import url("globals.css");
+
 
 @font-face {
   font-family: "Roboto";

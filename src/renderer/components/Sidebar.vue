@@ -32,10 +32,12 @@ export default {
 </script>
 
 <style lang='scss'>
+
+
 #sidebar {
   width: 270px;
   min-height: 100vh;
-  background-color: $sidebarBackgroundColor;
+  background-color: var(--sidebar-background-color);
   color: white;
 }
 

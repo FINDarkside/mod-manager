@@ -19,7 +19,9 @@ new Vue({
   components: { App },
   router,
   store,
-  template: '<App/>'
+  render (createElement) {
+    return createElement('App');
+  }
 }).$mount('#app');
 
 // Add inspect element on development
