@@ -39,6 +39,7 @@ export default {
   min-height: 100vh;
   background-color: var(--sidebar-background-color);
   color: white;
+  flex-shrink: 0
 }
 
 .userImage {

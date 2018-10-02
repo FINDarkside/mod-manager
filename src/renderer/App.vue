@@ -54,8 +54,9 @@ export default {
 }
 
 .page {
-  height: 100%;
+  height: 100vh;
   flex-grow: 1;
+  overflow: hidden;
 }
 
 .fade-enter-active {

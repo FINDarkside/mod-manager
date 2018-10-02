@@ -100,6 +100,7 @@ function pack (config) {
 
 function web () {
   del.sync(['dist/web/*', '!.gitkeep'])
+  webConfig.mode = 'production'
   webpack(webConfig, (err, stats) => {
     if (err || stats.hasErrors()) console.log(err)
 
