@@ -8,7 +8,7 @@
         <h1 v-else class="inline">Tough luck</h1>
       </div>
       
-      <v-form ref="form" v-model="valid" lazy-validation @submit="submit" v-if="mode!=='forgotPassword'">
+      <v-form ref="form" v-model="valid" lazy-validation @submit="submit" v-if="mode!=='forgotPassword'" v-on:submit.prevent>
         <v-text-field 
           ref="input-username"
           label="Username" 
