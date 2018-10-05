@@ -1,7 +1,7 @@
 <template>
     <v-card class="mod-card" :class="{installed: mod.installed, 'updates-available': mod.updatesAvailable}">
       <div class="flexbox">
-        <img width="192" height="108" src="~@/assets/RN-logo.png">
+        <img width="192" height="108" class="image" src="~@/assets/RN-logo.png">
         <div class="mod-card-main-content">
           <div class="mod-card-header" v-text="mod.name"></div>
           <p class="mod-card-description mb-0" v-text="mod.description"></p>
@@ -34,7 +34,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class ModCard extends Vue {
   @Prop(Object)
   public mod!: object;
-
 }
 </script>
 
@@ -44,6 +43,10 @@ export default class ModCard extends Vue {
   width: calc(100% - 40px);
   margin: 0 auto;
   overflow: hidden;
+
+  img {
+    flex-shrink: 0;
+  }
 }
 
 .mod-card-main-content {
