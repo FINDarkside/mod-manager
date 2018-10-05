@@ -1,0 +1,9 @@
+{
+  "stylusSupremacy.insertBraces": true,
+  "stylusSupremacy.insertColons": false,
+  "stylusSupremacy.insertSemicolons": true,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "tabWidth": 2,
+  "printWidth": 120
+}
