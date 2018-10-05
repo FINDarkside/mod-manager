@@ -1,5 +1,5 @@
 <template>
-  <div id="sidebar">
+  <div id="sidebar" class="elevation-12 color">
     <div class="userContainer" v-if="!!$store.state.user.userData">
       <a class="userImage-link">
         <img class="userImage" src="~@/assets/logo.png">
@@ -38,8 +38,7 @@ export default class Sidebar extends Vue {
 
   generalState = general;
 
-  mounted() {
-  }
+  mounted() {}
 }
 </script>
 
@@ -47,9 +46,11 @@ export default class Sidebar extends Vue {
 #sidebar {
   width: 270px;
   min-height: 100vh;
-  background-color: var(--sidebar-background-color);
-  color: white;
   flex-shrink: 0;
+
+  a {
+    color: #333;
+  }
 }
 
 .userImage {
@@ -59,7 +60,6 @@ export default class Sidebar extends Vue {
 
 i.userImage {
   font-size: 90px;
-  color: rgba(0, 0, 0, 0.4) !important;
 }
 
 .userImage-link {
@@ -69,7 +69,7 @@ i.userImage {
   width: 127px;
   height: 127px;
   overflow: hidden;
-  background-color: #555;
+  background-color: #828282;
 }
 
 .userContainer {

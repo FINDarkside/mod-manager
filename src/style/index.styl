@@ -1,9 +1,9 @@
-$alert-font-size = 18px
-
-@import '~vuetify/src/stylus/main'
+@require './vuetify-variables';
+@require '~vuetify/src/stylus/main';
 @require ('util.styl');
 @require ('variables.styl');
-$body-font-family = 'Open Sans'
+
+$body-font-family = 'Open Sans';
 
 html {
     overflow: hidden !important;
@@ -13,14 +13,22 @@ html {
     display: none;
 }
 
-.theme--light.background {
-    background-color: #fafafa;
+.theme--light {
+    .bg {
+        background-color: var(--theme-light-background-color);
+    }
+
+    .color {
+        color: var(--theme-light-color);
+    }
 }
 
-.bg {
-    background-color: #fafafa;
-}
+.theme--dark {
+    .bg {
+        background-color: var(--theme-dark-background-color);
+    }
 
-.theme--dark .bg {
-    background-color: #303030;
+    .color {
+        color: var(--theme-light-color);
+    }
 }
