@@ -12,5 +12,32 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
-  render: (h) => h(App),
+  render: h => h(App),
 }).$mount('#app');
+
+// Add inspect element on development
+if (process.env.NODE_ENV === 'development') {
+  const { remote } = require('electron');
+  const { Menu, MenuItem } = remote;
+
+  let rightClickPosition: any = null;
+
+  const menu = new Menu();
+  const menuItem = new MenuItem({
+    label: 'Inspect Element',
+    click: () => {
+      (<any>remote.getCurrentWindow()).inspectElement(rightClickPosition.x, rightClickPosition.y);
+    },
+  });
+  menu.append(menuItem);
+
+  window.addEventListener(
+    'contextmenu',
+    e => {
+      e.preventDefault();
+      rightClickPosition = { x: e.x, y: e.y };
+      menu.popup(<any>remote.getCurrentWindow());
+    },
+    false
+  );
+}
