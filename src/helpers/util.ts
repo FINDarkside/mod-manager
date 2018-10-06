@@ -10,3 +10,7 @@ export function get(obj: any, path: string, defaultVal: any): any {
   }
   return obj;
 }
+
+export function nextInt(min: number, max: number) {
+  return Math.round(Math.random() * (max - min) + min);
+}

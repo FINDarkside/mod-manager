@@ -13,6 +13,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "lorem-ipsum": "^1.0.6",
     "material-design-icons-iconfont": "^3.0.3",
     "roboto-fontface": "*",
     "vue": "^2.5.17",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@types/jest": "^23.3.3",
+    "@types/lorem-ipsum": "^1.0.2",
     "@vue/cli-plugin-babel": "^3.0.4",
     "@vue/cli-plugin-e2e-cypress": "^3.0.4",
     "@vue/cli-plugin-typescript": "^3.0.4",

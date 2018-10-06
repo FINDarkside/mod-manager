@@ -1,5 +1,6 @@
 <template>
-    <v-card class="mod-card" :class="{installed: mod.installed, 'updates-available': $get(mod,'installed.updatesAvailable',false)}">
+    <v-card class="mod-card" :class="{installed: mod.installed, 'updates-available': $get(mod,'installed.updatesAvailable',false)}"
+            :to="'/mod/'+mod.id">
       <div class="flexbox">
         <img width="192" height="108" class="image" src="~@/assets/RN-logo.png">
         <div class="mod-card-main-content">
@@ -9,7 +10,7 @@
         <div class="mod-card-secondary-content">
           <div>
               <v-icon>person</v-icon> 
-              <a class="bold" onclick="alert('asd')">ShieldHeart</a>
+              <a class="bold" v-text="mod.authorName"></a>
           </div>
           <div class="spacer"></div>
           <div>
@@ -76,6 +77,7 @@ export default class ModCard extends Vue {
 .mod-card-secondary-content {
   display: flex;
   flex: 0 0 auto;
+  width: 130px;
   flex-direction: column;
   justify-content: center;
   margin: 15px 15px;
