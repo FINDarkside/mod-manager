@@ -2,6 +2,8 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 import Vue from 'vue';
+import { get } from '@/helpers/util';
+Vue.prototype.$get = get;
 import './plugins/vuetify';
 import App from './App.vue';
 import router from './router/index';

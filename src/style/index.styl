@@ -1,7 +1,9 @@
 @require './vuetify-variables';
+@require ('variables.styl');
 @require '~vuetify/src/stylus/main';
 @require ('util.styl');
-@require ('variables.styl');
+@require ('scrollbar.styl');
+@require ('general.styl');
 
 $body-font-family = 'Open Sans';
 
@@ -11,6 +13,10 @@ html {
 
 .hide {
     display: none;
+}
+
+.h100 {
+    height: 100%;
 }
 
 .theme--light {
@@ -23,12 +29,16 @@ html {
     }
 }
 
+#app.theme--light {
+    background-color: #fafafa;
+}
+
 .theme--dark {
     .bg {
         background-color: var(--theme-dark-background-color);
     }
 
     .color {
-        color: var(--theme-light-color);
+        color: var(--theme-dark-color);
     }
 }

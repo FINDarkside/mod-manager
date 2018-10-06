@@ -56,6 +56,7 @@ export default {
 
 .page {
   height: 100vh;
+  display: flex;
   flex-grow: 1;
   overflow: hidden;
 }

@@ -1,5 +1,5 @@
 <template>
-  <router-link class='sidebar-item' :class='{ active: active }' :to='path' >
+  <router-link class='sidebar-item color' :class='{ active: active, "primary-bg": active }' :to='path' >
     {{title}}
   </router-link>
 </template>
@@ -29,9 +29,4 @@ export default class Sidebar extends Vue {
   widows: 100%;
 }
 
-.sidebar-item.active,
-.sidebar-item:hover {
-  background-color: var(--sidebar-selected-background-color);
-  color: var(--sidebar-selected-color)!important;
-}
 </style>

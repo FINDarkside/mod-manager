@@ -7,7 +7,7 @@
       <input type="color" v-model="$vuetify.theme.primary" />
       <label for="head">Primary color: {{$vuetify.theme.primary}}</label>
       <br>
-      <input type="color" v-model="$vuetify.theme.Secondary" />
+      <input type="color" v-model="$vuetify.theme.secondary" />
       <label for="head">Secondary color: {{$vuetify.theme.secondary}}</label>
       <br>
       <input type="color" v-model="$vuetify.theme.accent" />

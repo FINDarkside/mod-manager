@@ -47,10 +47,6 @@ export default class Sidebar extends Vue {
   width: 270px;
   min-height: 100vh;
   flex-shrink: 0;
-
-  a {
-    color: #333;
-  }
 }
 
 .userImage {

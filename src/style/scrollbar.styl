@@ -1,0 +1,26 @@
+$scrollbar-width = 10px;
+
+.primary-scrollbar {
+  overflow: auto;
+}
+
+.primary-scrollbar::-webkit-scrollbar {
+  width: $scrollbar-width;
+}
+
+.primary-scrollbar::-webkit-scrollbar-track {
+  border-radius: $scrollbar-width;
+}
+
+.theme--light .primary-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.theme--dark .primary-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.primary-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: $scrollbar-width;
+}
