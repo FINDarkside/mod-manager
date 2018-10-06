@@ -1,6 +1,6 @@
 <template>
 <div class="page" id="browse-mods-page">
-  <div class="ma-4 flexbox-column flexbox-grow">
+  <div class="ma-4 flexbox-column flexbox-grow of-hidden">
     <div class="display-1 mb-2">{{mods.length}} mods</div>
     <div class="flexbox">
       <div class="mod-list primary-scrollbar">
