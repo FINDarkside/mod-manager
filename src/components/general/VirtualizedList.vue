@@ -1,8 +1,10 @@
 <template >
   <div ref="virtualizedList" class="virtualized-list">
-    <div v-for="item in itemPool" v-if="item.item" :key="item.id" :is="renderer" 
-        :mod="item.item" class="virtualized-list-item" :style="{ transform: 'translateY(' + item.top + 'px)' }" >  
-    </div>
+      <div v-for="item in elementPool" :key="item.id" 
+        class="virtualized-list-item" :style="{ transform: 'translateY(' + item.top + 'px)' }" >
+          <div v-if="item.item" :is="renderer" :mod="item.item" />
+          <div v-else>asdasd</div>
+      </div> 
     <div :style="{ height: spacer + 'px' }"/>
   </div>
 </template>
@@ -16,17 +18,26 @@ import debounce from '@/helpers/debounce';
 export default class VirtualizedList extends Vue {
   @Prop(Object)
   dataSource!: DataSource;
+  @Prop(Object)
+  dataSourceParams!: DataSource;
 
   @Prop(Number)
-  bufferItems!: number;
+  bufferedElements!: number;
   @Prop(Number)
-  itemHeight!: number;
+  elementHeight!: number;
+
+  @Prop(Number)
+  maxBatchesInMemory!: number;
+  @Prop(Number)
+  batchSize!: number;
 
   @Prop(Function)
   renderer!: Function;
 
-  itemPool: PoolComponent[] = [];
-  maxItems: number = 1000000;
+  elementPool: PoolComponent[] = [];
+  //batches = new Map<number, object[]>();
+  batches: ItemBatch[] = [];
+  maxItems: number = 100000;
 
   spacer = 0;
 
@@ -34,79 +45,176 @@ export default class VirtualizedList extends Vue {
 
   deadlock = false;
 
-  async handleScroll(evt: Event) {
+  handleScroll(evt: Event) {
     if (this.deadlock) return;
     let y = (<any>this.$refs).virtualizedList.scrollTop;
     let h = (<any>this.$refs).virtualizedList.clientHeight;
-    let itemPool = this.itemPool;
+    let elementPool = this.elementPool;
 
     let count = 0;
 
     while (true) {
       count++;
-      if (count > this.itemPool.length) {
+      if (count > this.elementPool.length) {
         this.deadlock = true;
         console.log('DEADLOCK');
         return;
       }
 
-      let top = itemPool[0].top;
-      let bottom = itemPool[itemPool.length - 1].top + this.itemHeight;
-      let last = itemPool[itemPool.length - 1];
+      const top = elementPool[0].top;
+      const bottom = elementPool[elementPool.length - 1].top + this.elementHeight;
+      const last = elementPool[elementPool.length - 1];
 
       const offset = y - top - (bottom - y - h);
 
       if (bottom < y || top > y + h) {
-        // TODO: Prevent going over index
-        let center = y + h / 2;
-        let newY = center - (center % this.itemHeight);
-        let index = newY / this.itemHeight;
-        for (var i = 0; i < this.itemPool.length; i++) {
-          itemPool[i].top = newY;
-          itemPool[i].index = index++;
-          itemPool[i].item = this.dataSource.getItemSync(index);
-          newY += this.itemHeight;
+
+        const center = y + h / 2;
+        let newY = center - (this.elementHeight * this.elementPool.length) / 2;
+        newY = newY - (newY % this.elementHeight);
+        let index = newY / this.elementHeight;
+        // Prevent trying to show items outside of [0, this.maxItems[
+        if (index < 0) {
+          index = 0;
+        } else if (index + elementPool.length >= this.maxItems) {
+          index = this.maxItems - elementPool.length;
         }
-      } else if (offset > this.itemHeight && last.index < this.maxItems - 1) {
-        const item = <PoolComponent>this.itemPool.shift();
-        item.top = last.top + this.itemHeight;
-        item.index = last.index + 1;
-        item.item = this.dataSource.getItemSync(item.index);
-        this.itemPool.push(item);
-      } else if (-offset > this.itemHeight && itemPool[0].index > 0) {
-        const item = <PoolComponent>this.itemPool.pop();
-        item.top = itemPool[0].top - this.itemHeight;
-        item.index = itemPool[0].index - 1;
-        item.item = this.dataSource.getItemSync(item.index);
-        this.itemPool.unshift(item);
+        for (var i = 0; i < this.elementPool.length; i++) {
+          elementPool[i].top = index * this.elementHeight;
+          elementPool[i].item = this.getItem(index);
+          elementPool[i].index = index++;
+          newY += this.elementHeight;
+        }
+        break;
+      } else if (offset > this.elementHeight && last.index < this.maxItems - 1) {
+        const element = <PoolComponent>this.elementPool.shift();
+        element.top = last.top + this.elementHeight;
+        element.index = last.index + 1;
+        element.item = this.getItem(element.index);
+        this.elementPool.push(element);
+      } else if (-offset > this.elementHeight && elementPool[0].index > 0) {
+        const element = <PoolComponent>this.elementPool.pop();
+        element.top = elementPool[0].top - this.elementHeight;
+        element.index = elementPool[0].index - 1;
+        element.item = this.getItem(element.index);
+        this.elementPool.unshift(element);
       } else {
         break;
       }
     }
+    this.updateDataDebounced();
   }
 
-  getItemForIndexDebounced = debounce(this.getItemForIndex, 100);
+  getItem(index: number) {
+    const batchIndex = Math.floor(index / this.batchSize);
+    const itemIndex = index % this.batchSize;
+    const batchId = batchIndex - this.batches[0].batchIndex;
+    if (this.batches[batchId]) return this.batches[batchId].items[itemIndex];
+    return null;
+  }
 
-  async getItemForIndex(index: number, poolIndex: number) {
-    const item = await this.dataSource.getItem(index);
-    if (this.itemPool[poolIndex].index !== index) console.log('FAIL');
-    this.itemPool[poolIndex].item = item;
+  updateDataDebounced = debounce(this.updateData, 100);
+
+  updateData() {
+    const elementPool = this.elementPool;
+
+    const totalBatches = Math.floor(this.maxItems / this.batchSize) + 1;
+    const topBatchId = Math.max(Math.floor(elementPool[0].index / this.batchSize) - 1, 0);
+    const bottomBatchId = Math.min(
+      Math.floor(elementPool[elementPool.length - 1].index / this.batchSize) + 1,
+      totalBatches - 1
+    );
+
+    let currentTopBatch = this.batches[0].batchIndex;
+    let currentBottomBatch = this.batches[this.batches.length - 1].batchIndex;
+    if (topBatchId > currentBottomBatch + 1 || bottomBatchId < currentTopBatch - 1) {
+      console.log('REMOVE ALL');
+      this.batches.length = 0;
+      currentTopBatch = -1;
+      currentBottomBatch = -1;
+    }
+    for (let i = topBatchId - 1; i <= bottomBatchId + 1; i++) {
+      if (i >= 0 && i < totalBatches && (i < currentTopBatch || i > currentBottomBatch)) {
+        console.log('Getting batch ' + i);
+
+        let batch: ItemBatch = { batchIndex: i, items: [] };
+        if (i < currentTopBatch) this.batches.unshift(batch);
+        else this.batches.push(batch);
+
+        this.dataSource
+          .getBatch(i * this.batchSize, (i + 1) * this.batchSize, this.dataSourceParams)
+          .then(res => {
+            console.log('Got batch ' + batch.batchIndex);
+            batch.items = res;
+            this.applyBatch(batch);
+          })
+          .catch(err => console.error(err));
+      }
+    }
+
+    if (this.batches.length > this.maxBatchesInMemory) {
+      const midBatch = topBatchId + Math.round((topBatchId - bottomBatchId) / 2);
+      const halfBatches = Math.ceil(this.maxBatchesInMemory / 2);
+
+      let topBatches = midBatch - this.batches[0].batchIndex + 1;
+      let bottomBatches = this.batches[this.batches.length - 1].batchIndex - midBatch;
+
+      while (this.batches.length > this.maxBatchesInMemory) {
+        if (bottomBatches > topBatches) {
+          this.batches.pop();
+          bottomBatches--;
+        }else{
+          this.batches.shift();
+          topBatches--;
+        }
+      }
+      console.log('CLEANING ' + this.batches.length);
+    }
+  }
+
+  applyBatch(batch: ItemBatch) {
+    const topElement = this.elementPool[0];
+    const lastElement = this.elementPool[this.elementPool.length - 1];
+
+    const batchTop = batch.batchIndex * this.batchSize;
+    const batchBottom = (batch.batchIndex + 1) * this.batchSize;
+    /*for (let i = batchTop; i < batchBottom; i++) {
+      if (i >= topElement.index && i <= lastElement.index) {
+        console.log('APPLY ' + i);
+        this.elementPool[i].item = batch.items[i - batchTop];
+      }
+    }*/
+    if (batchTop > lastElement.index || batchBottom < topElement.index) return;
+    const diff = topElement.index - batchTop;
+
+    for (let i = 0; i - diff < this.batchSize && i < this.elementPool.length; i++) {
+      try {
+        this.elementPool[i].item = batch.items[i - diff];
+      } catch (error) {
+        debugger;
+      }
+    }
+    /*for (let i = diff; i < this.batchSize && i < this.elementPool.length; i++) {
+      
+    }*/
   }
 
   async initialize() {
     let height = (<any>this.$refs).virtualizedList.clientHeight;
-    let idCounter = 0;
-    let poolSize = Math.ceil(height / this.itemHeight) + this.bufferItems;
+    let idCounter = 1;
+    let poolSize = this.bufferedElements;
     poolSize = Math.min(poolSize, this.maxItems);
     for (let i = 0; i < poolSize; i++) {
-      this.itemPool.push({
+      this.elementPool.push({
         id: idCounter++,
-        item: await this.dataSource.getItem(i),
-        top: this.itemHeight * i,
+        item: null,
+        top: this.elementHeight * i,
         index: i,
       });
     }
-    this.spacer = this.maxItems * this.itemHeight;
+    this.batches.push({ batchIndex: Number.MAX_VALUE, items: [] });
+    this.updateData();
+    this.spacer = this.maxItems * this.elementHeight;
   }
 
   mounted() {
@@ -114,10 +222,15 @@ export default class VirtualizedList extends Vue {
 
     this.initialize();
   }
+
+  beforeDestroy() {
+    // Probably not necessary
+    (<any>this.$refs.virtualizedList).removeEventListener('scroll', this.handleScroll);
+  }
 }
 
 interface DataSource {
-  getitemPoolBetween(min: number, max: number): Promise<object[]>;
+  getBatch(min: number, max: number, params: object): Promise<object[]>;
   getItem(index: number): Promise<object>;
   getItemSync(index: number): object;
 }
@@ -127,6 +240,11 @@ interface PoolComponent {
   item: object | null;
   top: number;
   index: number;
+}
+
+interface ItemBatch {
+  batchIndex: number;
+  items: object[];
 }
 </script>
 

@@ -4,19 +4,16 @@ import loremIpsum from 'lorem-ipsum';
 
 const mods: Mod[] = [];
 let count = 0;
-for (let i = 0; i < 300; i++) {
-  const mod = createMod();
-  mod.downloads = Math.round(Math.random() * 100000);
-  mod.likes = Math.round(Math.random() * mod.downloads);
-  mod.id = (count++).toString();
+for (let i = 0; i < 1000; i++) {
+  const mod = createMod(i);
   mods.push(mod);
 }
 
-function createMod(): Mod {
+function createMod(index :number): Mod {
   const downloads = util.nextInt(0, 50000);
   return {
-    id: 'asd',
-    name: loremIpsum({ count: util.nextInt(1, 5), units: 'words' }),
+    id: index.toString(),
+    name: 'Mod number ' + (index + 1),
     shortDescription: loremIpsum({ count: util.nextInt(10, 40), units: 'words' }),
     smallImage: 'https://i.imgur.com/zbXe0SEg.png',
     authorId: 'ASD',
@@ -58,15 +55,44 @@ export async function searchMods(
   return result;
 }
 
+export async function getModBatch(
+  minIndex: number,
+  maxIndex: number,
+  params: {
+    searchString: string;
+    sortMode: SortMode;
+    sortDirecton: SortDirection;
+  }
+): Promise<Mod[]> {
+  await util.wait(0);
+  /*console.time('searchMods');
+
+  let result = mods;
+  if (params.searchString) {
+    result = result.filter(
+      mod => mod.name.indexOf(params.searchString) !== -1 || mod.shortDescription.indexOf(params.searchString) !== -1
+    );
+  }
+  let sortBy = '';
+  if (params.sortMode === SortMode.Downloads) sortBy = 'downloads';
+  else if (params.sortMode === SortMode.Likes) sortBy = 'likes';
+  if (sortBy) {
+    result.sort((a: any, b: any) => params.sortDirecton * (a[sortBy] > b[sortBy] ? 1 : -1));
+  }*/
+  const result = [];
+  for(let i = minIndex; i < maxIndex; i++){
+    result.push(createMod(i));
+  }
+  return result;
+}
+
 export async function getMod(index: number) {
-  const mod = createMod();
-  mod.name = "Mod number " + index;
+  const mod = createMod(index);
   return mod;
 }
 
 export function getModSync(index: number) {
-  const mod = createMod();
-  mod.name = "Mod number " + index;
+  const mod = createMod(index);
   return mod;
 }
 

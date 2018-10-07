@@ -8,7 +8,7 @@ export default function debounce<T extends Function>(fn: T, delay: number): T & 
     }
     timeoutId = setTimeout(() => {
       const res = fn.apply(self, args);
-      if (typeof res.catch === 'function') res.catch((err: Error) => console.error(err));
+      if (res && typeof res.catch === 'function') res.catch((err: Error) => console.error(err));
     }, delay);
   };
 

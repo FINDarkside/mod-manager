@@ -7,7 +7,8 @@
           <!--<div class="mod-list primary-scrollbar vertical mr-3" v-show="!loading">
             <ModCard class="mr-3" v-for="mod in mods" :mod="mod" :key="mod.id"></ModCard>
           </div>-->
-          <VirtualizedList class="mod-list primary-scrollbar vertical mr-3" :dataSource="dataSource" :itemHeight="120" :bufferItems="10" :renderer="modCard">
+          <VirtualizedList class="mod-list primary-scrollbar vertical mr-3" 
+            :dataSource="dataSource" :elementHeight="120" :bufferedElements="12" :renderer="modCard" :batchSize="20" :maxBatchesInMemory="10" :dataSourceParams="{}" >
  
           </VirtualizedList>
         </transition>
@@ -62,7 +63,7 @@ export default class BrowseModsPage extends Vue {
   sortMode = ModService.SortMode.Likes;
   loading = false;
 
-  dataSource = { getItem: ModService.getMod, getItemSync: ModService.getModSync };
+  dataSource = { getItem: ModService.getMod, getItemSync: ModService.getModSync, getBatch: ModService.getModBatch };
   modCard = ModCard;
 
   searchModsDebounced = debounce(this.searchMods, 300);
