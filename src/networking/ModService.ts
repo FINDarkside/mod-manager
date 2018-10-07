@@ -3,12 +3,12 @@ import { Mod } from '@/store/modules/mods/types';
 import loremIpsum from 'lorem-ipsum';
 
 const mods: Mod[] = [];
-
-for (let i = 0; i < 200; i++) {
+let count = 0;
+for (let i = 0; i < 300; i++) {
   const mod = createMod();
   mod.downloads = Math.round(Math.random() * 100000);
   mod.likes = Math.round(Math.random() * mod.downloads);
-  mod.id = Math.round(Math.random() * 1000000).toString();
+  mod.id = (count++).toString();
   mods.push(mod);
 }
 
@@ -37,7 +37,9 @@ export async function searchMods(
   sortMode: SortMode,
   sortDirecton: SortDirection
 ): Promise<Mod[]> {
-  await util.wait(1000);
+  await util.wait(10000);
+  console.time('searchMods');
+
   console.log('Sort by ' + sortMode);
   let result = mods;
   if (searchString) {
@@ -51,8 +53,21 @@ export async function searchMods(
   if (sortBy) {
     result.sort((a: any, b: any) => sortDirecton * (a[sortBy] > b[sortBy] ? 1 : -1));
   }
+  console.timeEnd('searchMods');
 
   return result;
+}
+
+export async function getMod(index: number) {
+  const mod = createMod();
+  mod.name = "Mod number " + index;
+  return mod;
+}
+
+export function getModSync(index: number) {
+  const mod = createMod();
+  mod.name = "Mod number " + index;
+  return mod;
 }
 
 export enum SortDirection {

@@ -4,9 +4,12 @@
     <div class="display-1 mb-2">{{mods.length}} mods</div>
     <div class="flexbox" id="browseModsMainContainer">
         <transition name="fade2">
-          <div class="mod-list primary-scrollbar vertical mr-3" v-show="!loading">
+          <!--<div class="mod-list primary-scrollbar vertical mr-3" v-show="!loading">
             <ModCard class="mr-3" v-for="mod in mods" :mod="mod" :key="mod.id"></ModCard>
-          </div>
+          </div>-->
+          <VirtualizedList class="mod-list primary-scrollbar vertical mr-3" :dataSource="dataSource" :itemHeight="120" :bufferItems="10" :renderer="modCard">
+ 
+          </VirtualizedList>
         </transition>
         <div id="modLoadProgressContainer" v-show="loading">
           <v-progress-circular id="modLoadProgress" :size="90" :width="7" color="primary" indeterminate />
@@ -45,11 +48,12 @@ import ModCard from '@/components/ModCard.vue';
 import { Mod } from '@/store/modules/mods/types';
 import * as ModService from '@/networking/ModService';
 import debounce from '@/helpers/debounce';
+import VirtualizedList from '@/components/general/VirtualizedList.vue';
 
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 @Component({
-  components: { ModCard },
+  components: { ModCard, VirtualizedList },
 })
 export default class BrowseModsPage extends Vue {
   mods: Mod[] = [];
@@ -58,7 +62,11 @@ export default class BrowseModsPage extends Vue {
   sortMode = ModService.SortMode.Likes;
   loading = false;
 
+  dataSource = { getItem: ModService.getMod, getItemSync: ModService.getModSync };
+  modCard = ModCard;
+
   searchModsDebounced = debounce(this.searchMods, 300);
+
 
   async searchMods() {
     this.loading = true;
@@ -72,17 +80,17 @@ export default class BrowseModsPage extends Vue {
 
   @Watch('searchText')
   searchTextChanged() {
-    this.searchModsDebounced();
+    //this.searchModsDebounced();
   }
 
   @Watch('sortMode')
   @Watch('sortDirection')
   sortModeChanged() {
-    this.searchMods();
+    //this.searchMods();
   }
 
   async mounted() {
-    this.mods = await ModService.getMods();
+    //this.mods = await ModService.getMods();
   }
 }
 </script>
