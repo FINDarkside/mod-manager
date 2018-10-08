@@ -68,7 +68,6 @@ export default class VirtualizedList extends Vue {
       const offset = y - top - (bottom - y - h);
 
       if (bottom < y || top > y + h) {
-
         const center = y + h / 2;
         let newY = center - (this.elementHeight * this.elementPool.length) / 2;
         newY = newY - (newY % this.elementHeight);
@@ -121,7 +120,7 @@ export default class VirtualizedList extends Vue {
     const totalBatches = Math.floor(this.maxItems / this.batchSize) + 1;
     const topBatchId = Math.max(Math.floor(elementPool[0].index / this.batchSize) - 1, 0);
     const bottomBatchId = Math.min(
-      Math.floor(elementPool[elementPool.length - 1].index / this.batchSize) + 1,
+      Math.floor(elementPool[elementPool.length - 1].index / this.batchSize),
       totalBatches - 1
     );
 
@@ -151,6 +150,17 @@ export default class VirtualizedList extends Vue {
           .catch(err => console.error(err));
       }
     }
+    this.trimBatches();
+  }
+
+  trimBatches() {
+    const elementPool = this.elementPool;
+    const topBatchId = Math.max(Math.floor(elementPool[0].index / this.batchSize) - 1, 0);
+    const totalBatches = Math.floor(this.maxItems / this.batchSize) + 1;
+    const bottomBatchId = Math.min(
+      Math.floor(elementPool[elementPool.length - 1].index / this.batchSize),
+      totalBatches - 1
+    );
 
     if (this.batches.length > this.maxBatchesInMemory) {
       const midBatch = topBatchId + Math.round((topBatchId - bottomBatchId) / 2);
@@ -163,7 +173,7 @@ export default class VirtualizedList extends Vue {
         if (bottomBatches > topBatches) {
           this.batches.pop();
           bottomBatches--;
-        }else{
+        } else {
           this.batches.shift();
           topBatches--;
         }
@@ -177,7 +187,7 @@ export default class VirtualizedList extends Vue {
     const lastElement = this.elementPool[this.elementPool.length - 1];
 
     const batchTop = batch.batchIndex * this.batchSize;
-    const batchBottom = (batch.batchIndex + 1) * this.batchSize;
+    const batchBottom = (batch.batchIndex + 1) * this.batchSize - 1;
     /*for (let i = batchTop; i < batchBottom; i++) {
       if (i >= topElement.index && i <= lastElement.index) {
         console.log('APPLY ' + i);
@@ -185,12 +195,12 @@ export default class VirtualizedList extends Vue {
       }
     }*/
     if (batchTop > lastElement.index || batchBottom < topElement.index) return;
-    const diff = topElement.index - batchTop;
+    const diff = batchTop - topElement.index;
 
-    for (let i = 0; i - diff < this.batchSize && i < this.elementPool.length; i++) {
+    for (let i = Math.max(diff, 0); i < this.elementPool.length && i < this.batchSize - diff; i++) {
       try {
         this.elementPool[i].item = batch.items[i - diff];
-      } catch (error) {
+      } catch (err) {
         debugger;
       }
     }
