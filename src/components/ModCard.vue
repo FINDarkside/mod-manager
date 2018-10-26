@@ -2,7 +2,7 @@
     <v-card class="mod-card" :class="{installed: mod.installed, 'updates-available': $get(mod,'installed.updatesAvailable',false)}"
             :to="'/mod/'+mod.id">
       <div class="flexbox">
-        <img width="192" height="108" class="image" src="~@/assets/RN-logo.png">
+        <img width="192" height="108" class="image" :src="imgUrl">
         <div class="mod-card-main-content">
           <div class="mod-card-header" v-text="mod.name"></div>
           <p class="mod-card-description mb-0" v-text="mod.shortDescription"></p>
@@ -29,13 +29,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { Mod } from '@/store/modules/mods/types';
 
 @Component
 export default class ModCard extends Vue {
   @Prop(Object)
   public mod!: Mod;
+
+  imgUrl!: string;
+
+  @Watch('mod')
+  modChanged() {
+    this.imgUrl = 'https://picsum.photos/192/108/?image=' + Math.round(Math.random() * 100);
+  }
+
+  created() {
+    this.imgUrl = 'https://picsum.photos/192/108/?image=' + Math.round(Math.random() * 100);
+  }
 }
 </script>
 

@@ -64,7 +64,7 @@ export async function getModBatch(
     sortDirecton: SortDirection;
   }
 ): Promise<Mod[]> {
-  await util.wait(0);
+  await util.wait(700);
   /*console.time('searchMods');
 
   let result = mods;

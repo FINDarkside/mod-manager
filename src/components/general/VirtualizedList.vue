@@ -1,9 +1,9 @@
 <template >
   <div ref="virtualizedList" class="virtualized-list">
-      <div v-for="item in elementPool" :key="item.id" 
-        class="virtualized-list-item" :style="{ transform: 'translateY(' + item.top + 'px)' }" >
-          <div v-if="item.item" :is="renderer" :mod="item.item" />
-          <div v-else>asdasd</div>
+      <div v-for="elem in elementPool" :key="elem.id" 
+        class="virtualized-list-item" :style="{ transform: 'translateY(' + elem.top + 'px)' }" >
+          <div v-if="elem.item" :is="renderer" :mod="elem.item"/>
+          <div v-else :is="placeholderRenderer"/>
       </div> 
     <div :style="{ height: spacer + 'px' }"/>
   </div>
@@ -13,8 +13,11 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { EventEmitter } from 'events';
 import debounce from '@/helpers/debounce';
+import ModCardPlaceholder from '@/components/ModCardPlaceholder.vue';
 
-@Component
+@Component({
+  components: { ModCardPlaceholder },
+})
 export default class VirtualizedList extends Vue {
   @Prop(Object)
   dataSource!: DataSource;
@@ -33,6 +36,10 @@ export default class VirtualizedList extends Vue {
 
   @Prop(Function)
   renderer!: Function;
+  @Prop(Function)
+  placeholderRenderer!: Function;
+
+  ModCardPlaceholder = ModCardPlaceholder;
 
   elementPool: PoolComponent[] = [];
   //batches = new Map<number, object[]>();
