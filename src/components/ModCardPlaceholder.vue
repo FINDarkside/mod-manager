@@ -89,7 +89,6 @@ export default class ModCardPlaceholder extends Vue {}
   margin: 15px 0 15px 15px;
 
   i {
-    color: #dedede !important;
     font-size: 18px;
     margin-right: 4px;
   }
