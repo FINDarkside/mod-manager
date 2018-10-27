@@ -1,10 +1,16 @@
 <template >
   <div ref="virtualizedList" class="virtualized-list">
       <div v-for="elem in elementPool" :key="elem.id" 
-          <div v-if="elem.item" :is="renderer" :mod="elem.item"/>
         class="virtualized-list-item pr-3" :style="{ transform: 'translateY(' + elem.top + 'px)' }" >
-          <div v-else :is="placeholderRenderer"/>
-      </div> 
+          <div class="relative">
+            <transition name="fade-enter">
+              <div class="virtualized-list-content" v-if="elem.item" :is="renderer" :mod="elem.item"/>
+            </transition>
+            <transition name="fade-leave">
+              <div class="virtualized-list-content" v-if="!elem.item" :is="placeholderRenderer"/>
+            </transition>
+          </div>
+      </div>
     <div :style="{ height: spacer + 'px' }"/>
   </div>
 </template>
@@ -273,6 +279,12 @@ interface ItemBatch {
 .virtualized-list-item {
   position: absolute !important;
   transition: transform 0s !important;
+  width: 100%;
+}
+
+.virtualized-list-content {
+  position: absolute !important;
+  top: 0px;
   width: 100%;
 }
 </style>

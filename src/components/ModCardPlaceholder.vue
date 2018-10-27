@@ -1,29 +1,29 @@
 <template>
     <v-card class="mod-card-placeholder">
       <div class="flexbox">
-        <div class="image" />
+        <div class="image placeholder-pulse-bg" />
         <div class="mod-card-placeholder-main-content">
-          <div class="mod-card-placeholder-header"></div>
+          <div class="mod-card-placeholder-header placeholder-pulse-bg"></div>
           <div class="mod-card-placeholder-description mb-0">
-            <div/>
-            <div/>
-            <div/>
+            <div class="placeholder-pulse-bg"/>
+            <div class="placeholder-pulse-bg"/>
+            <div class="placeholder-pulse-bg"/>
           </div>
         </div>
         <div class="mod-card-placeholder-secondary-content">
           <div>
-              <v-icon>person</v-icon> 
-              <span class="mod-card-person-placeholder"/>
+              <v-icon class="placeholder-pulse-color">person</v-icon> 
+              <span class="mod-card-person-placeholder placeholder-pulse-bg"/>
           </div>
           <div class="spacer"></div>
           <div>
-              <v-icon>favorite</v-icon> 
-              <span class="mod-card-likes-placeholder"/>
+              <v-icon class="placeholder-pulse-color">favorite</v-icon> 
+              <span class="mod-card-likes-placeholder placeholder-pulse-bg"/>
           </div>
           <div class="spacer"></div>
           <div>
-              <v-icon>file_download</v-icon> 
-              <span class="mod-card-likes-placeholder"/>
+              <v-icon class="placeholder-pulse-color">file_download</v-icon> 
+              <span class="mod-card-likes-placeholder placeholder-pulse-bg"/>
           </div>
         </div>
         <div class="installed-indicator"></div>
@@ -48,7 +48,6 @@ export default class ModCardPlaceholder extends Vue {}
     flex-shrink: 0;
     width: 192px;
     height: 108px;
-    background-color: var(--mod-card-placeholder-background-color);
   }
 }
 
@@ -63,7 +62,6 @@ export default class ModCardPlaceholder extends Vue {}
   margin: 1px 0 6px 0;
   border-radius: 26px;
   max-width: 180px;
-  background-color: #dedede;
 }
 
 .mod-card-placeholder-description {
@@ -71,7 +69,6 @@ export default class ModCardPlaceholder extends Vue {}
     height: 15px;
     margin-bottom: 4px;
     border-radius: 15px;
-    background-color: #dedede;
   }
 
   div:nth-child(2) {
@@ -105,7 +102,6 @@ export default class ModCardPlaceholder extends Vue {}
   width: 100px;
   border-radius: 14px;
   display: inline-block;
-  background-color: var(--mod-card-placeholder-background-color);
 }
 
 .mod-card-likes-placeholder {
@@ -115,6 +111,5 @@ export default class ModCardPlaceholder extends Vue {}
   width: 50px;
   border-radius: 14px;
   display: inline-block;
-  background-color: var(--mod-card-placeholder-background-color);
 }
 </style>
