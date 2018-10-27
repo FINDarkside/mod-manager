@@ -1,8 +1,8 @@
 <template >
   <div ref="virtualizedList" class="virtualized-list">
       <div v-for="elem in elementPool" :key="elem.id" 
-        class="virtualized-list-item" :style="{ transform: 'translateY(' + elem.top + 'px)' }" >
           <div v-if="elem.item" :is="renderer" :mod="elem.item"/>
+        class="virtualized-list-item pr-3" :style="{ transform: 'translateY(' + elem.top + 'px)' }" >
           <div v-else :is="placeholderRenderer"/>
       </div> 
     <div :style="{ height: spacer + 'px' }"/>
