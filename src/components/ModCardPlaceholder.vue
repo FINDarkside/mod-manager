@@ -60,18 +60,16 @@ export default class ModCardPlaceholder extends Vue {}
 
 .mod-card-placeholder-header {
   height: 24px;
-  margin-bottom: 4px;
+  margin: 1px 0 6px 0;
   border-radius: 26px;
-  width: 180px;
+  max-width: 180px;
   background-color: #dedede;
 }
 
 .mod-card-placeholder-description {
-  margin-top: 2px;
-
   div {
     height: 15px;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     border-radius: 15px;
     background-color: #dedede;
   }
@@ -101,7 +99,9 @@ export default class ModCardPlaceholder extends Vue {}
 }
 
 .mod-card-person-placeholder {
-  height: 16px;
+  position: relative;
+  top: 2px;
+  height: 14px;
   width: 100px;
   border-radius: 14px;
   display: inline-block;
@@ -109,7 +109,9 @@ export default class ModCardPlaceholder extends Vue {}
 }
 
 .mod-card-likes-placeholder {
-  height: 16px;
+  position: relative;
+  top: 2px;
+  height: 14px;
   width: 50px;
   border-radius: 14px;
   display: inline-block;
