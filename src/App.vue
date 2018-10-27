@@ -4,7 +4,7 @@
       <Sidebar :routes="routes"></Sidebar>
       <router-view></router-view>
     </div>
-    <transition name="fade">
+    <transition name="fade-scale">
       <LoginPage v-if='$store.state.general.loginScreenVisible'></LoginPage>
     </transition>
   </v-app>
@@ -61,17 +61,4 @@ export default {
   overflow: hidden;
 }
 
-.fade-enter-active {
-  transition: opacity 0.1s, transform 0.3s;
-}
-
-.fade-leave-active {
-  transition: opacity 0.3s, transform 0.3s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-  transform: scale(1.1, 1.1);
-}
 </style>

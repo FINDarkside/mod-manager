@@ -1,0 +1,79 @@
+@keyframes placeholder-pulse-bg {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+
+@keyframes placeholder-pulse-color {
+  0% {
+    color: rgba(165, 165, 165, 0.1);
+  }
+
+  50% {
+    color: rgba(165, 165, 165, 0.3);
+  }
+
+  100% {
+    color: rgba(165, 165, 165, 0.1);
+  }
+}
+
+.placeholder-pulse-bg {
+  animation: placeholder-pulse-bg 1s infinite ease-in-out;
+}
+
+.placeholder-pulse-color {
+  animation: placeholder-pulse-color 1s infinite ease-in-out;
+}
+
+/* Fade enter */ 
+
+.fade-enter-enter-active {
+  transition: opacity 0.5s ease-out !important;
+}
+
+.fade-enter-leave-active {
+  transition: opacity 0s !important;
+}
+
+.fade-enter-enter, .fade-enter-leave-to {
+  opacity: 0;
+}
+
+/* Fade leave */ 
+
+.fade-leave-enter-active {
+  transition: opacity 0s !important;
+}
+
+.fade-leave-leave-active {
+  transition: opacity 0.5s ease-in !important;
+}
+
+.fade-leave-enter, .fade-leave-leave-to {
+  opacity: 0;
+}
+
+/* Fade scale */ 
+
+.fade-scale-enter-active {
+  transition: opacity 0.1s, transform 0.3s;
+}
+
+.fade-scale-leave-active {
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.fade-scale-enter,
+.fade-scale-leave-to {
+  opacity: 0;
+  transform: scale(1.1, 1.1);
+}
