@@ -41,11 +41,19 @@ export default class ModCard extends Vue {
 
   @Watch('mod')
   modChanged() {
-    this.imgUrl = 'https://picsum.photos/192/108/?image=' + Math.round(Math.random() * 100);
+    this.imgUrl = this.getPicture();
   }
 
   created() {
-    this.imgUrl = 'https://picsum.photos/192/108/?image=' + Math.round(Math.random() * 100);
+    this.imgUrl = this.getPicture();
+  }
+
+  getPicture() {
+    let n = 0;
+    do {
+      n = Math.round(Math.random() * 100);
+    } while (n === 97 || n === 86);
+    return 'https://picsum.photos/192/108/?image=' + n;
   }
 }
 </script>
