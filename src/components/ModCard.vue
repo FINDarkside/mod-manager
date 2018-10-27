@@ -4,13 +4,13 @@
       <div class="flexbox">
         <img width="192" height="108" class="image" :src="imgUrl">
         <div class="mod-card-main-content">
-          <div class="mod-card-header" v-text="mod.name"></div>
+          <div class="mod-card-header nowrap-ellipsis" v-text="mod.name"></div>
           <p class="mod-card-description mb-0" v-text="mod.shortDescription"></p>
         </div>
         <div class="mod-card-secondary-content">
-          <div>
+          <div class="flexbox">
               <v-icon>person</v-icon> 
-              <a class="bold" v-text="mod.authorName"></a>
+              <a class="bold nowrap-ellipsis mod-card-author-name" v-text="mod.authorName"></a>
           </div>
           <div class="spacer"></div>
           <div>
@@ -79,10 +79,6 @@ export default class ModCard extends Vue {
   font-size: 24px;
   line-height: 1.1em;
   font-weight: bold;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-break: break-all;
-  overflow: hidden;
 }
 
 .mod-card-description {
@@ -99,7 +95,7 @@ export default class ModCard extends Vue {
   width: 130px;
   flex-direction: column;
   justify-content: center;
-  margin: 15px 15px;
+  margin: 15px 0 15px 15px;
 
   i {
     font-size: 18px;
@@ -118,5 +114,9 @@ export default class ModCard extends Vue {
 
 .updates-available .installed-indicator {
   background: #dc8b41;
+}
+
+.mod-card-author-name {
+  margin-top: 1px;
 }
 </style>

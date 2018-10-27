@@ -86,7 +86,7 @@ export default class ModCardPlaceholder extends Vue {}
   width: 130px;
   flex-direction: column;
   justify-content: center;
-  margin: 15px 15px;
+  margin: 15px 0 15px 15px;
 
   i {
     color: #dedede !important;
