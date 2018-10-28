@@ -1,6 +1,7 @@
 import BrowseModsPage from '@/components/pages/BrowseModsPage.vue';
 import AboutPage from '@/components/pages/AboutPage.vue';
 import SettingsPage from '@/components/pages/SettingsPage.vue';
+import ModPage from '@/components/pages/ModPage.vue';
 
 export default [
   /*{
@@ -18,6 +19,14 @@ export default [
     meta: {
       showInSidebar: true,
       title: 'Browse Mods',
+    },
+  },
+  {
+    path: '/mod/:modID',
+    component: ModPage,
+    props: true,
+    meta: {
+      showInSidebar: false,
     },
   },
   /*{
