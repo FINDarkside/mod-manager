@@ -9,7 +9,7 @@ for (let i = 0; i < 1000; i++) {
   mods.push(mod);
 }
 
-function createMod(index :number): Mod {
+function createMod(index: number): Mod {
   const downloads = util.nextInt(0, 50000);
   return {
     id: index.toString(),
@@ -80,14 +80,14 @@ export async function getModBatch(
     result.sort((a: any, b: any) => params.sortDirecton * (a[sortBy] > b[sortBy] ? 1 : -1));
   }*/
   const result = [];
-  for(let i = minIndex; i < maxIndex; i++){
+  for (let i = minIndex; i < maxIndex; i++) {
     result.push(createMod(i));
   }
   return result;
 }
 
-export async function getMod(index: number) {
-  const mod = createMod(index);
+export async function getModById(id: string) {
+  const mod = createMod(Number(id));
   return mod;
 }
 

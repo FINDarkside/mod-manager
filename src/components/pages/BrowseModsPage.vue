@@ -66,7 +66,7 @@ export default class BrowseModsPage extends Vue {
   sortMode = ModService.SortMode.Likes;
   loading = false;
 
-  dataSource = { getItem: ModService.getMod, getItemSync: ModService.getModSync, getBatch: ModService.getModBatch };
+  dataSource = { getItem: ModService.getModById, getItemSync: ModService.getModSync, getBatch: ModService.getModBatch };
   modCard = ModCard;
   modCardPlaceholder = ModCardPlaceholder;
 
