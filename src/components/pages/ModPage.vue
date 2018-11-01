@@ -44,6 +44,7 @@
             <div class="info-data">2.1.2018</div>
             <div class="info-title">Last updated</div>
             <div class="info-data">28.10.2018</div>
+            <v-btn flat color="error">Report</v-btn>
           </div>
           <v-btn depressed large color="primary" class="install-button">Install</v-btn>
         </v-card>
