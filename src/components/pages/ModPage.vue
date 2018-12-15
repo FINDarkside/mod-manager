@@ -10,8 +10,8 @@
           <v-carousel-item src="https://picsum.photos/576/324/?image=4" key="4"/>
           <v-carousel-item src="https://picsum.photos/192/108/?image=1" key="1"/>
         </v-carousel>
-        <v-expansion-panel class="mr-4">
-          <v-expansion-panel-content value="0">
+        <v-expansion-panel class="mr-4" value="expandState">
+          <v-expansion-panel-content>
             <div slot="header">
               <div class="flexbox vertical-align">
                 <v-icon>description</v-icon><span class="ml-3">Description</span>
@@ -61,6 +61,8 @@ import store from '@/store';
 export default class ModPage extends Vue {
   @Prop(String)
   modID!: string;
+
+  expandState = [true];
 }
 </script>
 
