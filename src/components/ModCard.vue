@@ -76,7 +76,7 @@ export default class ModCard extends Vue {
 <style lang="stylus">
 .mod-card {
   height: 108px;
-  margin: 0 auto;
+  width: 100%;
   overflow: hidden;
 
   img {
