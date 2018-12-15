@@ -64,7 +64,6 @@ import * as ServerUtil from '@/networking/ServerUtil';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import debounce from '@/helpers/debounce';
 import generalState from '@/store/general';
-import { GeneralState } from '@/store/modules/general/types';
 import userState from '@/store/user';
 
 @Component
@@ -80,7 +79,7 @@ export default class LoginPage extends Vue {
 
   checkUsernameAvailableDebounced = debounce(this.checkUsernameAvailable, 500);
 
-  generalState: GeneralState = generalState;
+  generalState = generalState;
 
   passwordRules = [
     (v: any) => (v && v.length >= 8) || 'Password must be more than 7 characters', // TODO: use zxcvbn?
