@@ -26,10 +26,10 @@
           <v-text-field placeholder="Search" v-model="searchText"></v-text-field>
           <div class="subheading">Sort by</div>
           <v-btn-toggle v-model="sortDirection" mandatory class="flexbox">
-            <v-btn flat value="-1" class="flexbox-grow">
+            <v-btn flat :value="-1" class="flexbox-grow">
               Descending
             </v-btn>
-            <v-btn flat value="1" class="flexbox-grow">
+            <v-btn flat :value="1" class="flexbox-grow">
               Ascending
             </v-btn>
           </v-btn-toggle>
@@ -62,7 +62,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 export default class BrowseModsPage extends Vue {
   mods: Mod[] = [];
   searchText = '';
-  sortDirection = ModService.SortDirection.Ascending;
+  sortDirection = ModService.SortDirection.Descending;
   sortMode = ModService.SortMode.Likes;
   loading = false;
 
