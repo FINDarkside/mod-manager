@@ -1,16 +1,13 @@
 <template >
   <div ref="virtualizedList" class="virtualized-list">
-      <div v-for="elem in elementPool" :key="elem.id" 
-        class="virtualized-list-item pr-3" :style="{ transform: 'translateY(' + elem.top + 'px)' }" >
-          <div class="relative">
-            <transition name="fade-enter">
-              <div class="virtualized-list-content" v-if="elem.item" :is="renderer" :mod="elem.item"/>
-            </transition>
-            <transition name="fade-leave">
-              <div class="virtualized-list-content" v-if="!elem.item" :is="placeholderRenderer"/>
-            </transition>
-          </div>
-      </div>
+    <div
+      v-for="elem in elementPool"
+      :key="elem.id"
+      class="virtualized-list-item"
+      :style="{ transform: 'translateY(' + elem.top + 'px)' }"
+    >
+      <div class="virtualized-list-content" :is="renderer" :mod="elem.item"/>
+    </div>
     <div :style="{ height: spacer + 'px' }"/>
   </div>
 </template>

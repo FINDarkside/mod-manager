@@ -9,9 +9,7 @@
           </div>-->
           <VirtualizedList class="mod-list primary-scrollbar vertical mr-3" 
             :dataSource="dataSource" :elementHeight="120" :bufferedElements="12" 
-            :renderer="modCard" :placeholderRenderer="modCardPlaceholder"
-            :batchSize="20" :maxBatchesInMemory="10" :dataSourceParams="{}" >
- 
+            :renderer="modCard" :batchSize="20" :maxBatchesInMemory="10" :dataSourceParams="{}" >
           </VirtualizedList>
         </transition>
         <div id="modLoadProgressContainer" v-show="loading">
@@ -48,7 +46,6 @@
 
 <script lang="ts">
 import ModCard from '@/components/ModCard.vue';
-import ModCardPlaceholder from '@/components/ModCardPlaceholder.vue';
 import { Mod } from '@/store/modules/mods/types';
 import * as ModService from '@/networking/ModService';
 import debounce from '@/helpers/debounce';
@@ -57,7 +54,7 @@ import VirtualizedList from '@/components/general/VirtualizedList.vue';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 @Component({
-  components: { ModCard, VirtualizedList, ModCardPlaceholder },
+  components: { ModCard, VirtualizedList },
 })
 export default class BrowseModsPage extends Vue {
   mods: Mod[] = [];
@@ -68,7 +65,6 @@ export default class BrowseModsPage extends Vue {
 
   dataSource = { getItem: ModService.getModById, getItemSync: ModService.getModSync, getBatch: ModService.getModBatch };
   modCard = ModCard;
-  modCardPlaceholder = ModCardPlaceholder;
 
   searchModsDebounced = debounce(this.searchMods, 300);
 
