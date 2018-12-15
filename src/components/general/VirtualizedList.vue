@@ -6,7 +6,9 @@
       class="virtualized-list-item"
       :style="{ transform: 'translateY(' + elem.top + 'px)' }"
     >
-      <div class="virtualized-list-content" :is="renderer" :mod="elem.item"/>
+      <div class="virtualized-list-content">
+        <div :is="renderer" :mod="elem.item"/>
+      </div>
     </div>
     <div :style="{ height: spacer + 'px' }"/>
   </div>

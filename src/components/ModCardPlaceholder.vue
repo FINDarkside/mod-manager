@@ -43,6 +43,7 @@ export default class ModCardPlaceholder extends Vue {}
   height: 108px;
   margin: 0 auto;
   overflow: hidden;
+  width: 100%;
 
   .image {
     flex-shrink: 0;
