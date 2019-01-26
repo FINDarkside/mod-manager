@@ -16,13 +16,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { EventEmitter } from 'events';
 import debounce from '@/helpers/debounce';
-import ModCardPlaceholder from '@/components/ModCardPlaceholder.vue';
 
-@Component({
-  components: { ModCardPlaceholder },
-})
+@Component
 export default class VirtualizedList extends Vue {
   @Prop(Object)
   dataSource!: DataSource;
@@ -44,16 +40,11 @@ export default class VirtualizedList extends Vue {
   @Prop(Function)
   placeholderRenderer!: Function;
 
-  ModCardPlaceholder = ModCardPlaceholder;
-
   elementPool: PoolComponent[] = [];
-  //batches = new Map<number, object[]>();
   batches: ItemBatch[] = [];
   maxItems: number = 100000;
 
   spacer = 0;
-
-  y = 0;
 
   deadlock = false;
 
@@ -66,13 +57,6 @@ export default class VirtualizedList extends Vue {
     let count = 0;
 
     while (true) {
-      count++;
-      if (count > this.elementPool.length) {
-        this.deadlock = true;
-        console.log('DEADLOCK');
-        return;
-      }
-
       const top = elementPool[0].top;
       const bottom = elementPool[elementPool.length - 1].top + this.elementHeight;
       const last = elementPool[elementPool.length - 1];
@@ -200,25 +184,13 @@ export default class VirtualizedList extends Vue {
 
     const batchTop = batch.batchIndex * this.batchSize;
     const batchBottom = (batch.batchIndex + 1) * this.batchSize - 1;
-    /*for (let i = batchTop; i < batchBottom; i++) {
-      if (i >= topElement.index && i <= lastElement.index) {
-        console.log('APPLY ' + i);
-        this.elementPool[i].item = batch.items[i - batchTop];
-      }
-    }*/
+
     if (batchTop > lastElement.index || batchBottom < topElement.index) return;
     const diff = batchTop - topElement.index;
 
     for (let i = Math.max(diff, 0); i < this.elementPool.length && i < this.batchSize - diff; i++) {
-      try {
-        this.elementPool[i].item = batch.items[i - diff];
-      } catch (err) {
-        debugger;
-      }
+      this.elementPool[i].item = batch.items[i - diff];
     }
-    /*for (let i = diff; i < this.batchSize && i < this.elementPool.length; i++) {
-      
-    }*/
   }
 
   async initialize() {
