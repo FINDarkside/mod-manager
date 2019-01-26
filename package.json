@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "lint-which-does-not-respect-tslint-config-and-produces-invalid-code": "vue-cli-service lint",
     "build:electron": "vue-cli-service build:electron",
     "postinstall": "electron-builder install-app-deps",
     "serve:electron": "vue-cli-service electron:serve",
