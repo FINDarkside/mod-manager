@@ -115,6 +115,7 @@ export default class BrowseModsPage extends Vue {
 }
 
 .mod-search-panel {
+  overflow: hidden;
   flex-basis: 250px;
   flex-shrink: 0;
   margin-left: auto;
