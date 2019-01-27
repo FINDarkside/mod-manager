@@ -16,9 +16,8 @@
 
         <div class="title mod-info-title mt-2">Images</div>
         <div>
-          <ImageDropArea/>
-          <v-btn class="ml-0">Select images</v-btn>
-          <v-btn class="ml-0">Remove all</v-btn>
+          <ImageDropArea :images="images"/>
+          <v-btn class="ml-0" @click="images = []">Remove all</v-btn>
         </div>
       </div>
     </div>
@@ -30,9 +29,12 @@ import ImageDropArea from '@/components/general/ImageDropArea.vue';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import * as ModService from '@/networking/ModService';
 import store from '@/store';
+import { ImageData } from '@/components/general/ImageDropArea.vue';
 
 @Component({ components: { ImageDropArea } })
 export default class AddModPage extends Vue {
+  name: string = '';
+  images: ImageData[] = [];
 
 }
 </script>

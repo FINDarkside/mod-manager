@@ -38,7 +38,8 @@ import store from '@/store';
 
 @Component
 export default class ImageDropArea extends Vue {
-  images: ImageData[] = [];
+  @Prop(Array)
+  images!: ImageData[];
 
   isDragOver = false;
   idCounter = 0;
