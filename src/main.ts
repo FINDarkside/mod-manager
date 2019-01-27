@@ -9,12 +9,19 @@ import App from './App.vue';
 import router from './router/index';
 import store from '@/store/store';
 
+import vuedraggable from 'vuedraggable';
+Vue.component('draggable', vuedraggable);
+
 Vue.config.productionTip = false;
 
 new Vue({
   router,
   store,
   render: h => h(App),
+  mounted() {
+    // Prevent blank screen in Electron builds
+    this.$router.push('/')
+  },
 }).$mount('#app');
 
 // Add inspect element on development

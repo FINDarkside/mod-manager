@@ -2,6 +2,7 @@ import BrowseModsPage from '@/components/pages/BrowseModsPage.vue';
 import AboutPage from '@/components/pages/AboutPage.vue';
 import SettingsPage from '@/components/pages/SettingsPage.vue';
 import ModPage from '@/components/pages/ModPage.vue';
+import AddModPage from '@/components/pages/AddModPage.vue';
 
 export default [
   /*{
@@ -14,7 +15,15 @@ export default [
       },
     },*/
   {
-    path: '/browse-mods',
+    path: '/mods/:modID',
+    component: ModPage,
+    props: true,
+    meta: {
+      showInSidebar: false,
+    },
+  },
+  {
+    path: '/mods',
     component: BrowseModsPage,
     meta: {
       showInSidebar: true,
@@ -22,11 +31,11 @@ export default [
     },
   },
   {
-    path: '/mod/:modID',
-    component: ModPage,
-    props: true,
+    path: '/addMod',
+    component: AddModPage,
     meta: {
-      showInSidebar: false,
+      showInSidebar: true,
+      title: 'Add mod',
     },
   },
   /*{
@@ -55,7 +64,7 @@ export default [
   },
   {
     path: '*',
-    redirect: '/browse-mods',
+    redirect: '/mods',
     meta: {
       showInSidebar: false,
       title: '',
