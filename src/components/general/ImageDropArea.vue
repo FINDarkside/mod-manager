@@ -11,7 +11,7 @@
   >
     <draggable
       v-if="images.length !== 0"
-      v-model="images"
+      :list="images"
       @start="drag=true"
       @end="drag=false"
       :options="{sort: true, animation: 300, easing: 'cubic-bezier(0.445, 0.05, 0.55, 0.95)',
