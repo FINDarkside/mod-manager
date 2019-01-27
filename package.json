@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint-which-does-not-respect-tslint-config-and-produces-invalid-code": "vue-cli-service lint",
-    "build:electron": "vue-cli-service build:electron",
-    "postinstall": "electron-builder install-app-deps",
+    "serve": "vue-cli-service serve --modern",
+    "build": "vue-cli-service build --modern",
     "serve:electron": "vue-cli-service electron:serve",
+    "build:electron": "vue-cli-service electron:build",
+    "lint-which-does-not-respect-tslint-config-and-produces-invalid-code": "vue-cli-service lint",
+    "postinstall": "electron-builder install-app-deps",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
   },
