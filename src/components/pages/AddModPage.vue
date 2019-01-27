@@ -4,15 +4,15 @@
       <div class="display-2 mb-3 font-weight-medium mt-4">Add mod</div>
       <div class="add-mod-data-grid">
         <div class="title mod-info-title mt-2">Mod name</div>
+        <v-text-field solo label="Solo textarea" value="Relentless night"/>
+
+        <div class="title mod-info-title mt-2">Mod description</div>
         <v-textarea
           :auto-grow="true"
           solo
           label="Solo textarea"
           value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
         ></v-textarea>
-
-        <div class="title mod-info-title mt-2">Mod description</div>
-        <v-text-field solo label="Solo textarea" value="Relentless night"/>
 
         <div class="title mod-info-title mt-2">Images</div>
         <div>
