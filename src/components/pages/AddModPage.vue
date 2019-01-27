@@ -16,7 +16,8 @@
 
         <div class="title mod-info-title mt-2">Images</div>
         <div>
-          <ImageDropArea :images="images"/>
+          <ImageDropArea ref="imageDropArea" :images="images"/>
+          <v-btn class="ml-0" @click="addImagesClicked">Add images</v-btn>
           <v-btn class="ml-0" @click="images = []">Remove all</v-btn>
         </div>
       </div>
@@ -30,12 +31,25 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import * as ModService from '@/networking/ModService';
 import store from '@/store';
 import { ImageData } from '@/components/general/ImageDropArea.vue';
+import { remote } from 'electron';
 
 @Component({ components: { ImageDropArea } })
 export default class AddModPage extends Vue {
   name: string = '';
   images: ImageData[] = [];
 
+  addImagesClicked() {
+    remote.dialog.showOpenDialog(
+      {
+        title: 'Select images',
+        filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png'] }],
+        properties: ['openFile', 'multiSelections'],
+      },
+      files => {
+        files.forEach(f => (this as any).$refs.imageDropArea.addImage(f));
+      }
+    );
+  }
 }
 </script>
 

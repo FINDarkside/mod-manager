@@ -35,6 +35,10 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import * as ModService from '@/networking/ModService';
 import store from '@/store';
+import fs from 'fs';
+import util from 'util';
+
+const readFile = util.promisify(fs.readFile);
 
 @Component
 export default class ImageDropArea extends Vue {
@@ -44,7 +48,10 @@ export default class ImageDropArea extends Vue {
   isDragOver = false;
   idCounter = 0;
 
-  addImage(img: string) {}
+  async addImage(path: string) {
+    const base64 = (await readFile(path)).toString('base64');
+    this.images.push({ id: '' + this.idCounter++, url: `data:image/gif;base64,${base64}`, local: true });
+  }
 
   print() {
     console.log(this.images[0]);
@@ -62,15 +69,7 @@ export default class ImageDropArea extends Vue {
   async dropHandler(evt: any) {
     console.log(evt.dataTransfer.files);
     for (const file of evt.dataTransfer.files) {
-      if (file.type !== 'image/png' && file.type !== 'image/jpeg') continue;
-      const dataUrl = await new Promise((resolve, reject) => {
-        const fr = new FileReader();
-        fr.onload = () => {
-          resolve(fr.result as string);
-        };
-        fr.readAsDataURL(file);
-      });
-      this.images.push({ id: '' + this.idCounter++, url: dataUrl as string, local: true });
+      this.addImage(file.path);
     }
 
     this.isDragOver = false;
