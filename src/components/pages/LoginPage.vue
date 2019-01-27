@@ -175,6 +175,7 @@ export default class LoginPage extends Vue {
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;
+  z-index: 10;
 }
 
 #login-page h1 {
