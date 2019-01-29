@@ -15,7 +15,7 @@
       @start="drag=true"
       @end="drag=false"
       :options="{sort: true, animation: 300, easing: 'cubic-bezier(0.445, 0.05, 0.55, 0.95)',
-        filter:'.image-remove-btn', ghostClass: 'sortable-ghost' }"
+        filter:'.image-remove-btn', ghostClass: 'sortable-ghost', forceFallback: true, fallbackClass:'drag-fallback'}"
       key="draggable"
       class="sortable-container"
     >
@@ -128,6 +128,20 @@ export interface ImageData {
   background: rgba(165, 165, 165, 0.3);
 
   :hover {
+  }
+}
+
+.sortable-item.sortable-ghost{
+  transition: 0s !important;
+  opacity: 0;
+}
+
+.sortable-item.drag-fallback{
+  transition: 0s;
+  opacity: 1;
+
+  .image-remove-btn{
+    visibility: hidden;
   }
 }
 
