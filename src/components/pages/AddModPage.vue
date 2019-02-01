@@ -8,31 +8,7 @@
 
         <div class="title mod-info-title mt-2">Mod description</div>
         <v-card>
-          <v-tabs>
-            <v-tab ripple>Markdown</v-tab>
-            <v-tab ripple>Preview</v-tab>
-            <v-tab-item class="descriptionTabContent primary-scrollbar vertical">
-              <v-textarea
-                v-model="description"
-                :auto-grow="true"
-                :hide-details="true"
-                solo
-                flat
-                label="Solo textarea"
-                value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
-              ></v-textarea>
-            </v-tab-item>
-            <v-tab-item
-              class="pa-3 descriptionTabContent primary-scrollbar vertical"
-              ref="descriptionTab"
-            >
-              <MarkdownRenderer
-                class="description-renderer description-preview-card"
-                :markdown="description"
-                ref="markdownRenderer"
-              />
-            </v-tab-item>
-          </v-tabs>
+          <MarkdownInput />
         </v-card>
 
         <div class="title mod-info-title mt-2">Images</div>
@@ -49,14 +25,14 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import ImageDropArea from '@/components/general/ImageDropArea.vue';
-import MarkdownRenderer from '@/components/general/MarkdownRenderer.vue';
+import MarkdownInput from '@/components/general/MarkdownInput.vue';
 
 import * as ModService from '@/networking/ModService';
 import store from '@/store';
 import { ImageData } from '@/components/general/ImageDropArea.vue';
 import { remote } from 'electron';
 
-@Component({ components: { ImageDropArea, MarkdownRenderer } })
+@Component({ components: { ImageDropArea, MarkdownInput } })
 export default class AddModPage extends Vue {
   name: string = '';
   images: ImageData[] = [];
@@ -107,14 +83,5 @@ export default class AddModPage extends Vue {
     column-gap: 50px;
     row-gap: 15px;
   }
-}
-
-.description-preview-card {
-  border: none;
-  width: 100%;
-}
-
-.descriptionTabContent {
-  max-height: 80vh;
 }
 </style>

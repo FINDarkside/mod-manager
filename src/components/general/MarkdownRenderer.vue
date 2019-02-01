@@ -18,7 +18,6 @@ const md = new MarkdownIt({
 
 @Component
 export default class MarkdownRenderer extends Vue {
-  // TODO: Fix requiring exclamation mark?
   @Prop(String)
   public markdown!: string;
 
@@ -55,16 +54,12 @@ export default class MarkdownRenderer extends Vue {
     frame.style.height = frame.contentWindow.document.body.offsetHeight + 'px';
   }
 
-  mounted() {
-  }
+  mounted() {}
 }
 </script>
 
 <style>
-.sidebar-item {
-  text-decoration: none;
-  display: block;
-  padding: 10px;
-  widows: 100%;
+iframe {
+  border: none;
 }
 </style>
