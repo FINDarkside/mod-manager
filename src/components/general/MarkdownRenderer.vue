@@ -45,11 +45,9 @@ export default class MarkdownRenderer extends Vue {
     frame.contentWindow.document.open();
     frame.contentWindow.document.write(pageHtml);
     frame.contentWindow.document.close();
-    console.log(frame.contentWindow.document.body.offsetHeight);
   }
 
   resizeFrame() {
-    console.log('RESIZED');
     const frame = this.$refs.renderFrame as any;
     frame.style.height = frame.contentWindow.document.body.offsetHeight + 'px';
   }
