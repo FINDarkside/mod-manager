@@ -5,7 +5,7 @@ export async function login(username: string, password: string): Promise<Request
   await Util.wait(1500);
   return {
     data: {
-      username: username,
+      username,
       sessionId: 'TEST',
       id: 'FUNNYID',
       profilePicture: 'asdasdasd',
@@ -17,7 +17,7 @@ export async function register(username: string, password: string, email: string
   await Util.wait(2000);
   return {
     data: {
-      username: username,
+      username,
       sessionId: 'TEST',
       id: 'FUNNYID',
       profilePicture: 'asdasdasd',

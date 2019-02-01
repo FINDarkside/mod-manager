@@ -3,7 +3,7 @@ import { Mod } from '@/store/modules/mods/types';
 import loremIpsum from 'lorem-ipsum';
 
 const mods: Mod[] = [];
-let count = 0;
+const count = 0;
 for (let i = 0; i < 1000; i++) {
   const mod = createMod(i);
   mods.push(mod);
@@ -18,7 +18,7 @@ function createMod(index: number): Mod {
     smallImage: 'https://i.imgur.com/zbXe0SEg.png',
     authorId: 'ASD',
     authorName: loremIpsum({ count: util.nextInt(1, 2), units: 'words' }),
-    downloads: downloads,
+    downloads,
     likes: util.nextInt(0, downloads),
   };
 }

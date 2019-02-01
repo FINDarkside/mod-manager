@@ -4,7 +4,7 @@ export function wait(ms: number) {
 
 export function get(obj: any, path: string, defaultVal: any): any {
   const props = path.split('.');
-  for (let prop of props) {
+  for (const prop of props) {
     obj = obj[prop];
     if (obj == null) return defaultVal;
   }

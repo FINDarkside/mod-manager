@@ -20,7 +20,7 @@ new Vue({
   render: h => h(App),
   mounted() {
     // Prevent blank screen in Electron builds
-    this.$router.push('/')
+    this.$router.push('/');
   },
 }).$mount('#app');
 
@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === 'development') {
   const menuItem = new MenuItem({
     label: 'Inspect Element',
     click: () => {
-      (<any>remote.getCurrentWindow()).inspectElement(rightClickPosition.x, rightClickPosition.y);
+      (remote.getCurrentWindow() as any).inspectElement(rightClickPosition.x, rightClickPosition.y);
     },
   });
   menu.append(menuItem);
@@ -45,7 +45,7 @@ if (process.env.NODE_ENV === 'development') {
     e => {
       e.preventDefault();
       rightClickPosition = { x: e.x, y: e.y };
-      menu.popup(<any>remote.getCurrentWindow());
+      menu.popup(remote.getCurrentWindow() as any);
     },
     false
   );

@@ -19,10 +19,9 @@ export const actions: ActionTree<UserState, RootState> = {
 };
 
 export const mutations: MutationTree<UserState> = {
-  setUserData(state, user: UserData) {
+  setUserData(state, userData: UserData) {
     console.log('setUser');
-    console.log(JSON.stringify(user));
-    state.userData = user;
+    state.userData = userData;
   },
   setLoggedIn(state, val: boolean) {
     state.loggedIn = true;

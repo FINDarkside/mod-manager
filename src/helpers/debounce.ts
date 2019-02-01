@@ -1,8 +1,8 @@
-export default function debounce<T extends Function>(fn: T, delay: number): T & Debounced {
+export default function debounce<T extends ((...args: any) => any)>(fn: T, delay: number): T & Debounced {
   let timeoutId: any = null;
 
-  const debounced: any = function(this: any, ...args: any[]) {
-    let self = this;
+  const debounced = function(this: any, ...args: any[]) {
+    const self = this;
     if (timeoutId !== null) {
       clearTimeout(timeoutId);
     }
@@ -18,7 +18,7 @@ export default function debounce<T extends Function>(fn: T, delay: number): T & 
     timeoutId = null;
   };
 
-  return debounced;
+  return debounced as T & Debounced;
 }
 
 interface Debounced {

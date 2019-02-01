@@ -1,50 +1,42 @@
 <template>
-  <v-app id="app" :dark="$store.state.general.darkMode" :style="cssProps"> 
-    <div id="mainWindow"> 
+  <v-app id="app" :dark="$store.state.general.darkMode" :style="cssProps">
+    <div id="mainWindow">
       <Sidebar :routes="routes"></Sidebar>
       <router-view></router-view>
     </div>
     <transition name="fade-scale">
-      <LoginPage v-if='$store.state.general.loginScreenVisible'></LoginPage>
+      <LoginPage v-if="$store.state.general.loginScreenVisible"></LoginPage>
     </transition>
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import Sidebar from '@/components/Sidebar.vue';
 import LoginPage from '@/components/pages/LoginPage.vue';
 import routes from '@/router/routes';
+import '@/style/index.styl'
 
-import style from '@/style/index.styl';
+@Component({ components: { Sidebar, LoginPage } })
+export default class App extends Vue {
+  routes = routes;
 
-export default {
-  name: 'App',
-  components: {
-    Sidebar,
-    LoginPage,
-  },
-  data() {
+  get cssProps() {
     return {
-      routes: routes,
+      '--primary-color': this.$vuetify.theme.primary,
+      '--secondary-color': this.$vuetify.theme.secondary,
+      '--accent-color': this.$vuetify.theme.accent,
+      '--error-color': this.$vuetify.theme.error,
+      '--info-color': this.$vuetify.theme.info,
+      '--success-color': this.$vuetify.theme.success,
+      '--warning-color': this.$vuetify.theme.warning,
     };
-  },
-  computed: {
-    cssProps() {
-      return {
-        '--primary-color': this.$vuetify.theme.primary,
-        '--secondary-color': this.$vuetify.theme.secondary,
-        '--accent-color': this.$vuetify.theme.accent,
-        '--error-color': this.$vuetify.theme.error,
-        '--info-color': this.$vuetify.theme.info,
-        '--success-color': this.$vuetify.theme.success,
-        '--warning-color': this.$vuetify.theme.warning,
-      };
-    },
-  },
-};
+  }
+}
 </script>
 
 <style>
+
 #app {
   height: 100vh;
   overflow: hidden;
@@ -60,5 +52,4 @@ export default {
   flex-grow: 1;
   overflow: hidden;
 }
-
 </style>
