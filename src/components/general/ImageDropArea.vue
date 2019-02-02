@@ -25,7 +25,7 @@
       </v-card>
     </draggable>
     <div v-else class="empty-image-area-text" :class="{'drag-over': isDragOver}">
-      <v-icon color="primary" size="124">photo</v-icon>
+      <v-icon color="primary" size="124" class="pr-3">photo</v-icon>
       <span class="display-1 font-weight-light">Drag & Drop Images</span>
     </div>
   </v-card>
