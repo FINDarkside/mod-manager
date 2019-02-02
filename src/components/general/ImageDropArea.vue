@@ -37,6 +37,7 @@ import * as ModService from '@/networking/ModService';
 import store from '@/store';
 import fs from 'fs';
 import util from 'util';
+import { remote } from 'electron';
 
 const readFile = util.promisify(fs.readFile);
 
@@ -75,6 +76,19 @@ export default class ImageDropArea extends Vue {
     this.isDragOver = false;
   }
 
+  showFileDialog(){
+    remote.dialog.showOpenDialog(
+      {
+        title: 'Select images',
+        filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png'] }],
+        properties: ['openFile', 'multiSelections'],
+      },
+      files => {
+        files.forEach(f => this.addImage(f));
+      }
+    );
+  }
+
   dragStart(evt: Event) {
     console.log(evt);
   }
@@ -111,9 +125,6 @@ export interface ImageData {
   flex-direction: row;
 }
 
-.image-drop-empty-message {
-}
-
 .sortable-container {
   display: flex;
   flex-wrap: wrap;
@@ -126,9 +137,6 @@ export interface ImageData {
   width: 192px;
   margin: 10px 5px;
   background: rgba(165, 165, 165, 0.3);
-
-  :hover {
-  }
 }
 
 .sortable-item.sortable-ghost{

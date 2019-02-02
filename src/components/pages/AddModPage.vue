@@ -64,16 +64,7 @@ export default class AddModPage extends Vue {
   }
 
   addImagesClicked() {
-    remote.dialog.showOpenDialog(
-      {
-        title: 'Select images',
-        filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png'] }],
-        properties: ['openFile', 'multiSelections'],
-      },
-      files => {
-        files.forEach(f => (this as any).$refs.imageDropArea.addImage(f));
-      }
-    );
+    (this as any).$refs.imageDropArea.showFileDialog();
   }
 }
 </script>
