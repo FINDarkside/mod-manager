@@ -24,7 +24,7 @@
         <img :src="image.url">
       </v-card>
     </draggable>
-    <div v-else class="empty-image-area-text" :class="{'drag-over': isDragOver}">
+    <div v-else class="empty-image-area-text" :class="{'drag-over': isDragOver}" @click="openFileDialog">
       <v-icon color="primary" size="124" class="pr-3">photo</v-icon>
       <span class="display-1 font-weight-light">Drag & Drop Images</span>
     </div>
@@ -76,7 +76,7 @@ export default class ImageDropArea extends Vue {
     this.isDragOver = false;
   }
 
-  showFileDialog(){
+  openFileDialog(){
     remote.dialog.showOpenDialog(
       {
         title: 'Select images',
@@ -170,8 +170,8 @@ export interface ImageData {
   display: flex;
   align-items: center;
   margin: auto;
-  pointer-events: none;
   transition: scale, 0.4s;
+  cursor: pointer;
 }
 
 .empty-image-area-text.drag-over {

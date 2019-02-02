@@ -64,7 +64,7 @@ export default class AddModPage extends Vue {
   }
 
   addImagesClicked() {
-    (this as any).$refs.imageDropArea.showFileDialog();
+    (this as any).$refs.imageDropArea.openFileDialog();
   }
 }
 </script>
