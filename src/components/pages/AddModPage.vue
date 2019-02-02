@@ -8,7 +8,7 @@
 
         <div class="title mod-info-title mt-2">Mod description</div>
         <v-card>
-          <MarkdownInput />
+          <MarkdownInput/>
         </v-card>
 
         <div class="title mod-info-title mt-2">Images</div>
@@ -16,6 +16,13 @@
           <ImageDropArea ref="imageDropArea" :images="images"/>
           <v-btn class="ml-0" @click="addImagesClicked">Add images</v-btn>
           <v-btn class="ml-0" @click="images = []">Remove all</v-btn>
+        </div>
+
+        <div class="title mod-info-title mt-2">Files</div>
+        <div>
+          <FileDropArea ref="fileDropArea" class="pa-3" :files="files"/>
+          <v-btn class="ml-0" @click="$refs.fileDropArea.openFileDialog()">Add files</v-btn>
+          <v-btn class="ml-0" @click="files = []">Remove all</v-btn>
         </div>
       </div>
     </div>
@@ -25,6 +32,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import ImageDropArea from '@/components/general/ImageDropArea.vue';
+import FileDropArea from '@/components/general/FileDropArea.vue';
 import MarkdownInput from '@/components/general/MarkdownInput.vue';
 
 import * as ModService from '@/networking/ModService';
@@ -32,10 +40,11 @@ import store from '@/store';
 import { ImageData } from '@/components/general/ImageDropArea.vue';
 import { remote } from 'electron';
 
-@Component({ components: { ImageDropArea, MarkdownInput } })
+@Component({ components: { ImageDropArea, MarkdownInput, FileDropArea } })
 export default class AddModPage extends Vue {
   name: string = '';
   images: ImageData[] = [];
+  files = [];
   description: string = '';
   descriptionCompiled = '';
 
