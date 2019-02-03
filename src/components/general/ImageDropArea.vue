@@ -24,7 +24,13 @@
         <img :src="image.url">
       </v-card>
     </draggable>
-    <div v-else class="empty-image-area-text" :class="{'drag-over': isDragOver}" @click="openFileDialog">
+
+    <div
+      v-else
+      class="empty-image-area-text"
+      :class="{'drag-over': isDragOver}"
+      @click="openFileDialog"
+    >
       <v-icon color="primary" size="124" class="pr-3">photo</v-icon>
       <span class="display-1 font-weight-light">Drag & Drop Images</span>
     </div>
@@ -50,12 +56,10 @@ export default class ImageDropArea extends Vue {
   idCounter = 0;
 
   async addImage(path: string) {
+    if (!path.endsWith('.jpg') && !path.endsWith('.jpeg') && !path.endsWith('.png')) return;
+
     const base64 = (await readFile(path)).toString('base64');
     this.images.push({ id: '' + this.idCounter++, url: `data:image/gif;base64,${base64}`, local: true });
-  }
-
-  print() {
-    console.log(this.images[0]);
   }
 
   removeImage(id: string) {
@@ -76,7 +80,7 @@ export default class ImageDropArea extends Vue {
     this.isDragOver = false;
   }
 
-  openFileDialog(){
+  openFileDialog() {
     remote.dialog.showOpenDialog(
       {
         title: 'Select images',
@@ -139,16 +143,16 @@ export interface ImageData {
   background: rgba(165, 165, 165, 0.3);
 }
 
-.sortable-item.sortable-ghost{
+.sortable-item.sortable-ghost {
   transition: 0s !important;
   opacity: 0;
 }
 
-.sortable-item.drag-fallback{
+.sortable-item.drag-fallback {
   transition: 0s;
   opacity: 1;
 
-  .image-remove-btn{
+  .image-remove-btn {
     visibility: hidden;
   }
 }
