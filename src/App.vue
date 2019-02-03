@@ -15,7 +15,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import Sidebar from '@/components/Sidebar.vue';
 import LoginPage from '@/components/pages/LoginPage.vue';
 import routes from '@/router/routes';
-import '@/style/index.styl'
 
 @Component({ components: { Sidebar, LoginPage } })
 export default class App extends Vue {

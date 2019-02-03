@@ -1,5 +1,11 @@
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import '@/style/general.styl';
+import '@/style/scrollbar.styl';
+import '@/style/animations.styl';
+import '@/style/util.styl';
+import '@/style/vuetify-overrides.styl';
+import '@/style/index.styl';
 
 import Vue from 'vue';
 import { get } from '@/helpers/util';
