@@ -1,6 +1,6 @@
 'use strict';
 
-import { app, protocol, BrowserWindow } from 'electron';
+import { app, protocol, BrowserWindow, shell } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
 import {
@@ -74,4 +74,15 @@ app.on('ready', async () => {
     await installVueDevtools();
   }
   mainWindow = createMainWindow();
+
+  mainWindow.webContents.on('new-window', (event: any, url: any) => {
+    event.preventDefault();
+    shell.openExternal(url)
+  });
+
+  mainWindow.webContents.on('will-navigate', (event: any, url: any) => {
+    console.log(url);
+    event.preventDefault();
+  });
+
 });
