@@ -23,6 +23,12 @@ export default class MarkdownRenderer extends Vue {
 
   @Watch('markdown')
   markdownChanged() {
+    this.updateFrame();
+  }
+
+  intervalObject: any;
+
+  updateFrame() {
     const markDowmHtml = md.render(this.markdown);
     const pageHtml = `
     <!doctype html><html>
@@ -36,6 +42,7 @@ export default class MarkdownRenderer extends Vue {
         html, body{
           margin:0;
           overflow: hidden;
+          min-height: 1px;
         }
       </style>
     </head>
@@ -45,14 +52,27 @@ export default class MarkdownRenderer extends Vue {
     frame.contentWindow.document.open();
     frame.contentWindow.document.write(pageHtml);
     frame.contentWindow.document.close();
+    this.resizeFrame();
   }
 
   resizeFrame() {
     const frame = this.$refs.renderFrame as any;
-    frame.style.height = frame.contentWindow.document.body.offsetHeight + 'px';
+    const height = frame.contentWindow.document.body.offsetHeight;
+    // If height is 0, the frame is hidden (we set min-height 1px)
+    if (height) {
+      frame.style.height = frame.contentWindow.document.body.offsetHeight + 'px';
+    }
   }
 
-  mounted() {}
+  mounted() {
+    this.updateFrame();
+    // Quite ugly, but there doesn't seem to be any better way to do this.
+    this.intervalObject = setInterval(this.resizeFrame, 200);
+  }
+
+  beforeDestroy() {
+    clearInterval(this.intervalObject);
+  }
 }
 </script>
 
