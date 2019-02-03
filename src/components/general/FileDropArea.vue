@@ -165,6 +165,7 @@ export interface FileData {
 
 .empty-file-area-text.drag-over {
   transform: scale(1.1);
+  pointer-events: none;
 }
 
 .file-treeview {

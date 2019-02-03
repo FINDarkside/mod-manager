@@ -180,5 +180,6 @@ export interface ImageData {
 
 .empty-image-area-text.drag-over {
   transform: scale(1.1);
+  pointer-events: none;
 }
 </style>
