@@ -77,7 +77,7 @@ app.on('ready', async () => {
 
   mainWindow.webContents.on('new-window', (event: any, url: any) => {
     event.preventDefault();
-    shell.openExternal(url)
+    shell.openExternal(url);
   });
 
   mainWindow.webContents.on('will-navigate', (event: any, url: any) => {

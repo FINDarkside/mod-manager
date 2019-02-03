@@ -3,5 +3,5 @@ import util from 'util';
 
 export default {
   lstat: util.promisify(fs.lstat),
-  readdir: util.promisify(fs.readdir)
-}
+  readdir: util.promisify(fs.readdir),
+};
