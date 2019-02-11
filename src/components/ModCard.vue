@@ -46,6 +46,10 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { Mod } from '@/store/modules/mods/types';
 import ModCardPlaceholder from '@/components/ModCardPlaceholder.vue';
 
+if(2 === 2){
+  require('module');
+}
+
 @Component({ components: { ModCardPlaceholder } })
 export default class ModCard extends Vue {
   @Prop(Object)
@@ -54,7 +58,7 @@ export default class ModCard extends Vue {
   modCardPlaceholder = ModCardPlaceholder;
   imgUrl!: string;
 
-  @Watch('mod')
+  @Watch("mod")
   modChanged() {
     this.imgUrl = this.getPicture();
   }
